@@ -10,7 +10,6 @@ import RenderProductsProp from "../types/RenderProductsProp"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
     const dispatch = useAppDispatch()
-    const navigate = useNavigate()
     const [ deleteProduct ] = useDeleteProductMutation()
 
     const onAddToCart = (payload: Product) => {
@@ -18,8 +17,15 @@ const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
     }
 
     return (
-        <Grid2 container spacing={3} columnSpacing={1} columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
-            sx={{ width: '100%', margin: '0 auto', gap: 1, display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+        <Grid2 container spacing={3}
+            columnSpacing={1}
+            columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
+            sx={{ width: '100%',
+                margin: '0 auto',
+                gap: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center'}}>
             {productsList.map(product => (
                 <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
                     key={product.id} 
@@ -55,7 +61,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
                                     width: '75%' }}>
                                 <Box sx={{ display: 'flex', gap: 1 }}>
                                     <Typography >
-                                        price:
+                                        Price:
                                     </Typography>
                                     <Typography >
                                         <b>{product.price} €</b>
