@@ -35,6 +35,10 @@ const ProductsPage = () => {
                 color="error"
                 variant="standard">     
                 There's been an error</Alert>}
+            {(!isLoading && (data === undefined || data.length < 1)) && <Alert sx={{ alignItems: 'center' }}
+                color="error"
+                variant="standard">     
+                Could not receive products data</Alert>}
             {data && <RenderProducts productsList={data}/>}
         </Box>
     )

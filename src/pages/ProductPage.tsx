@@ -19,17 +19,17 @@ const ProductPage = () => {
     }
 
     return (
-        <Grid2 container spacing={3}
-            columnSpacing={1}
-            columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
-            sx={{ width: '100%',
-                margin: '0 auto',
-                gap: 1,
-                display: 'flex',
-                justifyContent: 'center'}}>
-            <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <Grid2 container spacing={3}
+                columnSpacing={1}
+                columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
+                sx={{ width: '100%',
+                    margin: '0 auto',
+                    gap: 1,
+                    display: 'flex',
+                    justifyContent: 'center'}}>
                 {isLoading && <CircularProgress/>}
-                {isError && <Alert sx={{ alignItems: 'center' }}
+                {(isError || productId === '') && <Alert sx={{ alignItems: 'center' }}
                     color="error"
                     variant="standard">     
                     There's been an error</Alert>}
@@ -40,7 +40,7 @@ const ProductPage = () => {
                             sx={{ justifyContent: 'center',
                                 width: '100%',
                                 padding: 1 }}>
-                            <img src={image} alt='' style={{ width: '100%', height: 300, objectFit: 'cover' }} />
+                            <img src={image} alt='' style={{ width: '100%', height: 400, objectFit: 'cover' }} />
                         </Grid2>
                     ))}
                 </Box>
@@ -72,8 +72,8 @@ const ProductPage = () => {
                         </Typography>
                     </Box>
                 </Box>
-            </Card>
-        </Grid2>
+            </Grid2>
+        </Card>
     )
 }
 

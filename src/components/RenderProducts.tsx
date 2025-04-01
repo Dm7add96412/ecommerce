@@ -1,16 +1,14 @@
 import { Box, Card, Grid2, Typography, Link } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
-import { Link as RouterLink, useNavigate } from "react-router-dom"
+import { Link as RouterLink } from "react-router-dom"
 
 import useAppDispatch from "../hooks/useAppDispatch"
-import { useDeleteProductMutation } from "../redux/api/productApis"
 import { addToCart } from "../redux/reducers/cartReducer"
 import Product from "../types/Product"
 import RenderProductsProp from "../types/RenderProductsProp"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
     const dispatch = useAppDispatch()
-    const [ deleteProduct ] = useDeleteProductMutation()
 
     const onAddToCart = (payload: Product) => {
         dispatch(addToCart(payload))
