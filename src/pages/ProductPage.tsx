@@ -10,7 +10,7 @@ import { addToCart } from "../redux/reducers/cartReducer"
 const ProductPage = () => {
     const params = useParams()
     const productId = params.productId
-    const { data, isError, isLoading, error } = useFetchProductQuery(productId ?? '')
+    const { data, isError, isLoading } = useFetchProductQuery(productId ?? '')
     const dispatch = useAppDispatch()
     const [ deleteProduct ] = useDeleteProductMutation()
 

@@ -29,7 +29,7 @@ const Root = () => {
                             E-COMMERCE
                         </Typography>
                     </Box>
-                    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', gap: 4 }}>
+                    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', gap: 4, textAlign: 'center' }}>
                         <Button color='inherit' component={Link} to='/'>Homepage</Button>
                         <Button color='inherit' component={Link} to='/products'>Products</Button>
                         <Button color='inherit' component={Link} to='/shoppingcart'>Shopping cart</Button>
