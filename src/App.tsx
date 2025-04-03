@@ -6,6 +6,7 @@ import Root from './pages/Root';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import ProductPage from './pages/ProductPage';
+import CategoriesPage from './pages/CategoriesPage';
 
 function App() {
 
@@ -37,6 +38,10 @@ function App() {
         {
           path: '/singleproduct/:productId',
           element: <ProductPage/>
+        },
+        {
+          path: '/categories',
+          element: <CategoriesPage/>
         }
       ]
     }

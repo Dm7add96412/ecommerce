@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { Alert, Box, Button, Card, CircularProgress, Grid2, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 
-import { useDeleteProductMutation, useFetchProductQuery } from "../redux/api/productApis"
+import { /* useDeleteProductMutation */ useFetchProductQuery } from "../redux/api/productApis"
 import useAppDispatch from "../hooks/useAppDispatch"
 import Product from "../types/Product"
 import { addToCart } from "../redux/reducers/cartReducer"
@@ -12,7 +12,7 @@ const ProductPage = () => {
     const productId = params.productId
     const { data, isError, isLoading } = useFetchProductQuery(productId ?? '')
     const dispatch = useAppDispatch()
-    const [ deleteProduct ] = useDeleteProductMutation()
+  //  const [ deleteProduct ] = useDeleteProductMutation()
 
     const onAddToCart = (payload: Product) => {
         dispatch(addToCart(payload))
@@ -40,7 +40,7 @@ const ProductPage = () => {
                             sx={{ justifyContent: 'center',
                                 width: '100%',
                                 padding: 1 }}>
-                            <img src={image} alt='' style={{ width: '100%', height: 400, objectFit: 'cover' }} />
+                            <img src={image} alt='' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         </Grid2>
                     ))}
                 </Box>

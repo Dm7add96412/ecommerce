@@ -11,7 +11,7 @@ const SearchPage = () => {
     const params = useParams()
     const searchWord = params.searchWord
     const navigate = useNavigate()
-    const { data, isLoading, isError, error } = useSearchProductsQuery(searchWord ?? '')
+    const { data, isLoading, isError } = useSearchProductsQuery(searchWord ?? '')
 
     useEffect(() => {
         const foundProducts = [...data ?? []]
