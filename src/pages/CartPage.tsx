@@ -28,8 +28,7 @@ const CartPage = () => {
             <Card sx={{ display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                minWidth: '90%',
-                padding: 1 }}>
+                minWidth: '90%'}}>
                 <Typography variant='h5' sx={{ padding: 2 }}> SHOPPING CART</Typography>
                 <br/>
                 <Grid2 container spacing={2}
@@ -102,11 +101,11 @@ const CartPage = () => {
                                 <IconButton onClick={() => onRemoveFromCart(item)}>
                                     <RemoveIcon/>
                                 </IconButton>
-                                
                             </Grid2>
                         </Box>
                     ))}
                 </Grid2>
+                <br/>
             </Card>
             <br/>
             <Typography variant='h6'>Total price: {cartTotal()} €</Typography>

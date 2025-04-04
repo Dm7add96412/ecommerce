@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { CircularProgress, Alert, Box } from "@mui/material"
 
@@ -10,7 +10,6 @@ const SearchPage = () => {
     const [products, setProducts] = useState<Product[]>([])
     const params = useParams()
     const searchWord = params.searchWord
-    const navigate = useNavigate()
     const { data, isLoading, isError } = useSearchProductsQuery(searchWord ?? '')
 
     useEffect(() => {
