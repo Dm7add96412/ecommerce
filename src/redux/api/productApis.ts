@@ -38,7 +38,7 @@ const productApis = createApi({
             searchProductsPagination: builder.query<Product[], PaginationQuery>({
                 query: ({ offset, limit, search }) => `/?title=${search}&offset=${offset}&limit=${limit}`,
                 providesTags: ['Products']
-            }),
+            })
         })
 })
 

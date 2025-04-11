@@ -15,29 +15,29 @@ const SearchPage = () => {
     useEffect(() => {
         const foundProducts = [...data ?? []]
         setProducts(foundProducts)
-    }, [data])
+    }, [data, searchWord])
 
     return (
-        <Box sx={{ justifyItems: 'center', width: '100%' }}>
-            <Box sx={{ justifyItems: 'center', width: '100%'  }}>
-            {isLoading && <CircularProgress/>}
-            {isError && <Alert sx={{ alignItems: 'center' }}
-                color="error"
-                variant="standard">     
-                There's been an error</Alert>}
-            {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center' }}
-                color="warning"
-                variant="standard">
-                No products found for search word: <u><b>{searchWord}</b></u>
-                </Alert>}
-            {(!isLoading && (!isError && products.length > 0)) && <Alert sx={{ alignItems: 'center' }}
-                color="success"
-                variant="standard">
-                Results for the search word: <u><b>{searchWord}</b></u>
-                </Alert>}
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                {isLoading && <CircularProgress sx={{ justifySelf: 'center' }}/>}
+                {(isError && !isLoading) && <Alert sx={{ alignItems: 'center' }}
+                    color="error"
+                    variant="standard">     
+                    There's been an error</Alert>}
+                {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center' }}
+                    color="warning"
+                    variant="standard">
+                    No products found for search word: <u><b>{searchWord}</b></u>
+                    </Alert>}
+                {(!isLoading && (!isError && products.length > 0)) && <Alert sx={{ alignItems: 'center' }}
+                    color="success"
+                    variant="standard">
+                    Results for the search word: <u><b>{searchWord}</b></u>
+                    </Alert>}
             </Box>
             <Box sx={{ justifyItems: 'center', width: '100%' }}>
-                <RenderProducts productsList={products}/>
+                {(!isLoading && (!isError && products.length > 0)) && <RenderProducts productsList={products}/>}
             </Box>
         </Box>
     )

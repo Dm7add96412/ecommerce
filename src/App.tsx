@@ -7,6 +7,8 @@ import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import ProductPage from './pages/ProductPage';
 import CategoriesPage from './pages/CategoriesPage';
+import ProductsByCategoryPage from './pages/ProductsByCategoryPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
 
@@ -42,6 +44,14 @@ function App() {
         {
           path: '/categories',
           element: <CategoriesPage/>
+        },
+        {
+          path: '/categories/:categoryId/products',
+          element: <ProductsByCategoryPage/>
+        },
+        {
+          path: '/login',
+          element: <LoginPage/>
         }
       ]
     }

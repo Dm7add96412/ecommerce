@@ -20,11 +20,13 @@ const CartPage = () => {
     }
 
     const cartTotal = () => {
-        return cart.map(item => item.price * item.quantity).reduce((a, b) => a + b)
+        if (cart && cart.length > 0) {
+            return cart.map(item => item.price * item.quantity).reduce((a, b) => a + b)
+        }
     }
 
     return (
-        <Box sx={{ justifyItems: 'center' }}>
+        <Box sx={{ justifyItems: 'center', minWidth: '100%' }}>
             <Card sx={{ display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -67,7 +69,7 @@ const CartPage = () => {
                             </Typography>
                         </Grid2>
                     </Box>
-                    {cart && cart.map(item => (
+                    {(cart && cart.length > 0) && cart.map(item => (
                         <Box key={item.id} sx={{ display: 'flex',
                             flexDirection: 'row',
                             width: '100%',

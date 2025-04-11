@@ -1,5 +1,6 @@
 import { Alert, Card, CardActionArea, CardContent, CardMedia, CircularProgress, Grid2, Typography } from "@mui/material"
 import { useFetchAllCategoriesQuery } from "../redux/api/categoriesApis"
+import { Link } from "react-router-dom"
 
 const CategoriesPage = () => {
     const { data, isLoading, isError } = useFetchAllCategoriesQuery()
@@ -18,7 +19,7 @@ const CategoriesPage = () => {
                     justifyContent: 'center',
                     padding: 2
                  }}>
-                <Typography variant='h5'>CATEGORIES</Typography>
+                {!isLoading &&<Typography variant='h5'>CATEGORIES</Typography>}
                 {isLoading && <CircularProgress/>}
                 {isError && <Alert sx={{ alignItems: 'center' }}
                     color="error"
@@ -43,7 +44,10 @@ const CategoriesPage = () => {
                             justifyContent: 'center',
                             textAlign: 'center',
                             overflow: 'hidden'
-                         }}>
+                            }} 
+                            component={Link}
+                            to={`/categories/${category.id}/products`}
+                            style={{ textDecoration: 'none' }}>
                             <CardActionArea>
                                 <CardMedia component='img'
                                     image={category.image}
