@@ -5,8 +5,7 @@ import { useFetchAllProductsQuery } from '../redux/api/productApis';
 import RenderProducts from '../components/RenderProducts';
 
 const ProductsPage = () => {
-    const { data, isError, isLoading } = useFetchAllProductsQuery()
-
+    const { data, isLoading, isError } = useFetchAllProductsQuery()
 
     return (
         <Box sx={{ justifyItems: 'center' }}>

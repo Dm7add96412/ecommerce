@@ -1,4 +1,4 @@
-import { Alert, Card, CardActionArea, CardContent, CardMedia, CircularProgress, Grid2, Typography } from "@mui/material"
+import { Alert, Box, Card, CardActionArea, CardContent, CardMedia, CircularProgress, Grid2, Typography } from "@mui/material"
 import { useFetchAllCategoriesQuery } from "../redux/api/categoriesApis"
 import { Link } from "react-router-dom"
 
@@ -49,12 +49,17 @@ const CategoriesPage = () => {
                             to={`/categories/${category.id}/products`}
                             style={{ textDecoration: 'none' }}>
                             <CardActionArea>
+                                <Box sx={{ overflow: 'hidden' }}>
                                 <CardMedia component='img'
                                     image={category.image}
                                     height='140'
                                     sx={{ objectFit: 'cover',
-                                        zIndex: 0
-                                     }}/>
+                                        zIndex: 0,
+                                        transition: 'transform 0.2s ease-in-out',
+                                        transformOrigin: 'center center',
+                                        '&:hover': {transform: 'scale(1.1)'}
+                                     }}/>          
+                                </Box>
                                 <CardContent>
                                     <Typography variant='body2'>
                                         {category.name.toUpperCase()}

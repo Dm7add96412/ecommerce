@@ -7,18 +7,25 @@ import useAppDispatch from "../hooks/useAppDispatch"
 import { addToCart } from "../redux/reducers/cartReducer"
 import Product from "../types/Product"
 import RenderProductsProp from "../types/RenderProductsProp"
+import HandlePagination from "./HandlePagination"
 
-const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
+const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const dispatch = useAppDispatch()
+    const [page, setPage] = useState<number>(1)
     const [products, setProducts] = useState<Product[]>([])
     const [sortPrice, setSortPrice] = useState<string>('')
     const [sortAlpha, setSortAlpha] = useState<string>('')
     const [sorting, setSorting] = useState<boolean>(false)
     const [sorted, setSorted] = useState<string>('')
 
+    const limit = 16
+    const offset = (page - 1) * limit
+
     useEffect(() => {
         setProducts([...productsList])
     }, [productsList])
+
+    const productsPaginated = products.slice(offset, offset + limit)
 
     const onAddToCart = (payload: Product) => {
         dispatch(addToCart(payload))
@@ -106,7 +113,12 @@ const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
                                 Products sorted {sorted}
                         </Alert>
                     </Grid2>}
-            {products.map(product => (
+                <HandlePagination
+                    allProducts={productsList}
+                    limit={limit}
+                    setPage={setPage}
+                    page={page}/>
+            {productsPaginated.map(product => (
                 <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
                     key={product.id} 
                     sx={{ display: 'flex', justifyContent: 'center', width: '100%', padding: 0.5 }}>
@@ -115,7 +127,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
                         style={{ textDecoration: 'none', display: 'container', width: '100%', height: '100%' }}
                         sx={{ transition: 'transform 0.2s ease-in-out',
                             '&:hover': {
-                                transform: 'scale(1.05)'
+                                transform: 'scale(1.04)'
                             }
                          }}>
                         <Card sx={{ width: '100%',
@@ -159,6 +171,11 @@ const RenderProducts:React.FC<RenderProductsProp> = ({productsList}) => {
                     </Link>
                 </Grid2>
             ))}
+            <HandlePagination
+                allProducts={productsList}
+                limit={limit}
+                setPage={setPage}
+                page={page}/>
         </Grid2>
     )
 }
