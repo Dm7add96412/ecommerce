@@ -1,9 +1,6 @@
 interface User {
-    id: string,
-    name: string,
-    email: string,
-    role: string,
-    avatar: string
+    username: string,
+    password: string
 }
 
 export default User

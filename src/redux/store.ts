@@ -6,6 +6,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 
 import productApis from "./api/productApis";
 import categoriesApi from "./api/categoriesApis";
+import authApi from "./api/authApi";
 
 const persistConfig = {
   key: 'cart',
@@ -16,7 +17,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
   cartReducer,
   [productApis.reducerPath]: productApis.reducer,
-  [categoriesApi.reducerPath]: categoriesApi.reducer
+  [categoriesApi.reducerPath]: categoriesApi.reducer,
+  [authApi.reducerPath]: authApi.reducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -24,7 +26,8 @@ const persistedReducer = persistReducer(persistConfig, rootReducer)
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({serializableCheck: false}).concat(productApis.middleware, categoriesApi.middleware)
+    getDefaultMiddleware({serializableCheck: false})
+    .concat(productApis.middleware, categoriesApi.middleware, authApi.middleware)
 })
 
 export type RootState = ReturnType<typeof rootReducer>
