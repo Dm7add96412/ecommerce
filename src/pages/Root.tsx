@@ -4,14 +4,18 @@ import { Link, Outlet } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import { useState } from 'react'
+import LoginIcon from '@mui/icons-material/Login'
+import { useEffect, useState } from 'react'
 
 import Search from '../components/Search'
 import useAppSelector from '../hooks/useAppSelector'
+import ReturnedUser from '../types/ReturnedUser'
 
 const Root = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
+    const [user, setUser] = useState<ReturnedUser | null>(null)
     const cart = useAppSelector(state => state.cartReducer)
+    
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget)
     }
@@ -25,6 +29,15 @@ const Root = () => {
             return cart.map(item => item.quantity).reduce((a, b) => a + b)
         }
     }
+
+    useEffect(() => {
+        const loggedUser = localStorage.getItem('user')
+        if (loggedUser) {
+            setUser(JSON.parse(loggedUser))
+        } else {
+            setUser(null)
+        }
+    }, [])
 
     return (
         <Box sx={{ flexGrow: 1}} justifyItems='center'>
@@ -65,10 +78,16 @@ const Root = () => {
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
-                                        <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit'  }}
+                                        {user ? 
+                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit'  }}
                                             component={Link} to='/profilepage'>
                                             Profile
-                                        </Typography>
+                                            </Typography> :
+                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit'  }}
+                                            component={Link} to='/login'>
+                                            Login
+                                            </Typography>}
+
                                     </MenuItem>
                             </Menu>
                         </Box>
@@ -100,9 +119,14 @@ const Root = () => {
                     </Box>
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
                         <Search/>
-                        <IconButton color='inherit' component={Link} to='/profilepage'>
+                        {user ?
+                            <IconButton color='inherit' component={Link} to='/profilepage'>
                             <AccountCircleIcon/>
-                        </IconButton>
+                            </IconButton> :
+                            <IconButton color='inherit' component={Link} to='/login'>
+                            <LoginIcon/>
+                            </IconButton>}
+
                     </Box>
                 </Toolbar>
             </AppBar>

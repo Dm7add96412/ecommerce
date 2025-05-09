@@ -35,7 +35,7 @@ const ProductsByCategoryPage = () => {
             {isError && <Alert sx={{ alignItems: 'center' }}
                 color="error"
                 variant="standard">     
-                There's been an error</Alert>}
+                Error fetching products</Alert>}
             {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center' }}
                 color="warning"
                 variant="standard">

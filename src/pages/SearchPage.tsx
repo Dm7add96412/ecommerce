@@ -24,7 +24,7 @@ const SearchPage = () => {
                 {(isError && !isLoading) && <Alert sx={{ alignItems: 'center' }}
                     color="error"
                     variant="standard">     
-                    There's been an error</Alert>}
+                    Failed to search products</Alert>}
                 {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center' }}
                     color="warning"
                     variant="standard">

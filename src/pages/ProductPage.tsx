@@ -24,7 +24,7 @@ const ProductPage = () => {
             {(isError || productId === '') && <Alert sx={{ alignItems: 'center' }}
                 color="error"
                 variant="standard">     
-                There's been an error</Alert>}
+                Failed fetching product data</Alert>}
             {(!isLoading && !isError) && <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                 <Grid2 container spacing={3}
                     columnSpacing={1}

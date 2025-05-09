@@ -13,7 +13,7 @@ const ProductsPage = () => {
             {isError && <Alert sx={{ alignItems: 'center' }}
                 color="error"
                 variant="standard">     
-                There's been an error</Alert>}
+                Failed to fetch all products data</Alert>}
             {(!isLoading && (data === undefined || data.length < 1)) && <Alert sx={{ alignItems: 'center' }}
                 color="error"
                 variant="standard">     
