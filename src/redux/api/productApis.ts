@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
 import Product from "../../types/Product";
 import PaginationQuery from "../../types/PaginationQuery";
 

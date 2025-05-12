@@ -9,12 +9,18 @@ import { useEffect, useState } from 'react'
 
 import Search from '../components/Search'
 import useAppSelector from '../hooks/useAppSelector'
-import ReturnedUser from '../types/ReturnedUser'
+import { useFetchUserQuery } from '../redux/api/userApi'
 
 const Root = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
-    const [user, setUser] = useState<ReturnedUser | null>(null)
+    const [token, setToken] = useState<string>('')
+    const [userId, setUserId] = useState<string>('')
     const cart = useAppSelector(state => state.cartReducer)
+
+    const { data, isSuccess, refetch } = useFetchUserQuery(
+        { id: userId, token: token },
+        { skip: !userId || !token }
+    )
     
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget)
@@ -30,21 +36,31 @@ const Root = () => {
         }
     }
 
-    useEffect(() => {
-        const loggedUser = localStorage.getItem('user')
-        if (loggedUser) {
-            setUser(JSON.parse(loggedUser))
-        } else {
-            setUser(null)
+    const updateUserState = () => {
+        const localUser = localStorage.getItem('user')
+        if (localUser) {
+            const user = JSON.parse(localUser)
+            setToken(user.token)
+            setUserId(user.id)
         }
-    }, [])
+    }
+
+    useEffect(() => {
+        updateUserState();
+    }, [data]);
+
+    useEffect(() => {
+        if (isSuccess && data) {
+            refetch()
+        }
+    }, [isSuccess, data, refetch])
 
     return (
         <Box sx={{ flexGrow: 1}} justifyItems='center'>
             <AppBar position='static'>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                        <IconButton  color="inherit" component={Link} to="/" size='large' >
+                        <IconButton  color='inherit' component={Link} to='/' >
                             <HomeIcon/>
                         </IconButton>
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -72,18 +88,18 @@ const Root = () => {
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
-                                        <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit'  }}
+                                        <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
                                             component={Link} to='/shoppingcart'>
                                             Cart
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
-                                        {user ? 
-                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit'  }}
+                                        {data ? 
+                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
                                             component={Link} to='/profilepage'>
                                             Profile
                                             </Typography> :
-                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit'  }}
+                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
                                             component={Link} to='/login'>
                                             Login
                                             </Typography>}
@@ -119,12 +135,12 @@ const Root = () => {
                     </Box>
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
                         <Search/>
-                        {user ?
+                        {data ?
                             <IconButton color='inherit' component={Link} to='/profilepage'>
-                            <AccountCircleIcon/>
+                                <AccountCircleIcon/>
                             </IconButton> :
                             <IconButton color='inherit' component={Link} to='/login'>
-                            <LoginIcon/>
+                                <LoginIcon/>
                             </IconButton>}
 
                     </Box>

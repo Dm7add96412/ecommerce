@@ -1,18 +1,25 @@
 import { Alert, Box, Button, Typography } from "@mui/material"
 import TextField from '@mui/material/TextField'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { useLoginMutation } from "../redux/api/authApi"
 import { ApiError } from "../types/ApiError"
+import { useFetchUserQuery } from "../redux/api/userApi"
 
 const LoginPage = () => {
     const [username, setUserName] = useState<string>('')
     const [password, setPassword] = useState<string>('')
     const [loginError, setLoginError] = useState<string | null>(null)
+    const [token, setToken] = useState<string>('')
+    const [userId, setUserId] = useState<string>('')
     const [login] = useLoginMutation()
     const navigate = useNavigate()
 
+    const { data: userDetails, isSuccess } = useFetchUserQuery(
+        { id: userId, token: token },
+        { skip: !token || !userId })
+    
     function isApiError(error: unknown): error is ApiError {
         return typeof error ==='object' && error !== null && 'data' in error
     }
@@ -23,7 +30,8 @@ const LoginPage = () => {
         try {
             const resultUser = await login({ username, password }).unwrap()
             localStorage.setItem('user', JSON.stringify(resultUser))
-            navigate('/profilepage')
+            setToken(resultUser.token)
+            setUserId(resultUser.id)
         } catch (err: unknown) {
             if (isApiError(err)) {
                 setLoginError(err.data.error)
@@ -34,6 +42,12 @@ const LoginPage = () => {
         setUserName('')
         setPassword('')
     }
+
+    useEffect(() => {
+        if (userDetails && isSuccess) {
+            navigate('/profilepage')
+        }
+    }, [isSuccess, userDetails, navigate])
 
     return (
         <Box sx={{ display: 'flex',
