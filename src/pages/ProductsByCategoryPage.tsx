@@ -44,7 +44,7 @@ const ProductsByCategoryPage = () => {
             {(!isLoading && (!isError && products.length > 0)) && <Alert sx={{ alignItems: 'center' }}
                 color="success"
                 variant="standard">
-                Products in category: <u><b>{products[0].category.name}</b></u>
+                Products in category: <u><b>{products[0].category?.name}</b></u>
                 </Alert>}
                 <br/>
             </Box>

@@ -15,11 +15,11 @@ const Root = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
     const [token, setToken] = useState<string>('')
     const [userId, setUserId] = useState<string>('')
-    const cart = useAppSelector(state => state.cartReducer)
+    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
 
-    const { data, isSuccess, refetch } = useFetchUserQuery(
+    const { data, isError } = useFetchUserQuery(
         { id: userId, token: token },
-        { skip: !userId || !token }
+        { skip: !authUserId || !authToken }
     )
     
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -31,29 +31,20 @@ const Root = () => {
     }
 
     const cartQuantity = () => {
-        if (cart && cart.length > 0) {
-            return cart.map(item => item.quantity).reduce((a, b) => a + b)
+        if (isError) {
+            console.log('could not fetch user data')
         }
-    }
-
-    const updateUserState = () => {
-        const localUser = localStorage.getItem('user')
-        if (localUser) {
-            const user = JSON.parse(localUser)
-            setToken(user.token)
-            setUserId(user.id)
+        if (authToken && data?.cart && data?.cart.length > 0) {
+            return data?.cart.map(item => item.quantity).reduce((a, b) => a + b)
         }
     }
 
     useEffect(() => {
-        updateUserState();
-    }, [data]);
-
-    useEffect(() => {
-        if (isSuccess && data) {
-            refetch()
+        if (authToken && authUserId) {
+            setToken(authToken)
+            setUserId(authUserId)
         }
-    }, [isSuccess, data, refetch])
+    }, [authToken, authUserId])
 
     return (
         <Box sx={{ flexGrow: 1}} justifyItems='center'>
@@ -89,12 +80,12 @@ const Root = () => {
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={Link} to='/shoppingcart'>
+                                            component={Link} to={authToken ? '/shoppingcart' : '/login'}>
                                             Cart
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
-                                        {data ? 
+                                        {authToken ? 
                                             <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
                                             component={Link} to='/profilepage'>
                                             Profile
@@ -128,14 +119,14 @@ const Root = () => {
                         <Button color='inherit' component={Link} to='/products'>Products</Button>
                         <Button color='inherit' component={Link} to='/categories'>Categories</Button>
                         <Badge badgeContent={cartQuantity()} color='error'>
-                        <IconButton color='inherit' component={Link} to='/shoppingcart'>
+                        <IconButton color='inherit' component={Link} to={authToken ? '/shoppingcart' : '/login'}>
                             <ShoppingCartIcon/>
                         </IconButton>
                         </Badge>  
                     </Box>
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
                         <Search/>
-                        {data ?
+                        {authToken ?
                             <IconButton color='inherit' component={Link} to='/profilepage'>
                                 <AccountCircleIcon/>
                             </IconButton> :

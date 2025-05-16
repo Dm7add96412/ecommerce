@@ -8,15 +8,17 @@ import productApis from "./api/productApis";
 import categoriesApi from "./api/categoriesApis";
 import authApi from "./api/authApi";
 import userApi from "./api/userApi";
+import authReducer from "./reducers/authReducer";
 
 const persistConfig = {
-  key: 'cart',
+  key: 'auth',
   storage,
-  whitelist: ['cartReducer']
+  whitelist: ['authReducer']
 }
 
 const rootReducer = combineReducers({
   cartReducer,
+  authReducer,
   [productApis.reducerPath]: productApis.reducer,
   [categoriesApi.reducerPath]: categoriesApi.reducer,
   [authApi.reducerPath]: authApi.reducer,

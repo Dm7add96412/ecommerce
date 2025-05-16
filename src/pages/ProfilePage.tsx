@@ -3,44 +3,44 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { useFetchUserQuery } from "../redux/api/userApi"
-
+import useAppDispatch from "../hooks/useAppDispatch"
+import { logoutAuth } from "../redux/reducers/authReducer"
+import useAppSelector from "../hooks/useAppSelector"
 
 const ProfilePage = () => {
     const navigate = useNavigate()
     const [token, setToken] = useState<string>('')
     const [userId, setUserId] = useState<string>('')
     const [fetchError, setFetchError] = useState<string>('')
+    const dispatch = useAppDispatch()
+    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
 
-    const { data, isError } = useFetchUserQuery(
-        { id: userId, token: token },
-        { skip: !userId || !token }
+    const { data, isError, isFetching } = useFetchUserQuery(
+        { id: userId, token: token }
     )
     
     useEffect(() => {
-        const localUser = (localStorage.getItem('user'))
-        if (localUser) {
-            const user = JSON.parse(localUser)
-            setToken(user.token)
-            setUserId(user.id)
+        if (authToken && authUserId) {
+            setToken(authToken)
+            setUserId(authUserId)
         } 
-    }, [])
+    }, [authUserId, authToken])
 
     useEffect(() => {
-        if(isError) {
+        if(!isFetching && (isError || !data)) {
             setFetchError('Error fetching user data')
             setTimeout(() => {
                 setUserId('')
                 setToken('')
                 setFetchError('')
-                localStorage.removeItem('user')
+                dispatch(logoutAuth())
                 navigate('/login')
             }, 5000)
-            
         }
-    }, [isError, navigate])
+    }, [isError, data, isFetching, navigate, dispatch])
 
     const logOut = () => {
-        localStorage.removeItem('user')
+        dispatch(logoutAuth())
         setToken('')
         setUserId('')
         navigate('/login')
