@@ -17,11 +17,11 @@ const productApis = createApi({
                 providesTags: ['Products']
             }),
             fetchProduct: builder.query<Product, string>({
-                query: (productId) => `/${productId}`,
+                query: (id) => `/${id}`,
                 providesTags: ['Products']
             }),
             deleteProduct: builder.mutation<boolean, string>({
-                query: (productId) => ({ url: `/${productId}`, method: 'DELETE' }),
+                query: (id) => ({ url: `/${id}`, method: 'DELETE' }),
                 invalidatesTags: ['Products']
             }),
             updateProduct: builder.mutation<Product, Product>({

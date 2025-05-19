@@ -2,16 +2,22 @@ import { useEffect, useState } from 'react';
 import { Alert, Box, Card, Grid2, IconButton, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
+import { useNavigate } from 'react-router-dom';
 
 import useAppSelector from '../hooks/useAppSelector';
 import { useFetchUserQuery, useUpdateUserMutation } from '../redux/api/userApi';
 import { CartItem } from '../types/CartItem';
+import useAppDispatch from '../hooks/useAppDispatch';
+import { logoutAuth } from '../redux/reducers/authReducer';
 
 const CartPage = () => {
+    const navigate = useNavigate()
+    const dispatch = useAppDispatch()
     const [token, setToken] = useState<string>('')
     const [userId, setUserId] = useState<string>('')
+    const [errorMessage, setErrorMessage] = useState<string>('')
     const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
-    const { data, isError } = useFetchUserQuery({ id: userId, token: token })
+    const { data, isError, isFetching } = useFetchUserQuery({ id: userId, token: token })
     const [updateUser] = useUpdateUserMutation()
 
     useEffect(() => {
@@ -21,14 +27,26 @@ const CartPage = () => {
         } 
     }, [authUserId, authToken])
 
+    useEffect(() => {
+        if(!isFetching && (isError || !data)) {
+            setErrorMessage('Error fetching user data')
+            setTimeout(() => {
+                setUserId('')
+                setToken('')
+                dispatch(logoutAuth())
+                navigate('/login')
+            }, 5000)
+        }
+    }, [isError, data, token, isFetching, navigate, dispatch])
+
     const onAddToCart = async (cartItem: CartItem) => {
-        cartItem.quantity++
-        await updateUser({ id: userId, token, cartItem })
+        const updatedItem: CartItem = { ...cartItem, quantity: cartItem.quantity + 1 }
+        await updateUser({ id: userId, token, cartItem: updatedItem })
     }
 
     const onRemoveFromCart = async (cartItem: CartItem) => {
-        cartItem.quantity--
-        await updateUser({ id: userId, token, cartItem })
+        const updatedItem: CartItem = { ...cartItem, quantity: cartItem.quantity - 1 }
+        await updateUser({ id: userId, token, cartItem: updatedItem })
     }
 
     const cartTotal = () => {
@@ -45,11 +63,11 @@ const CartPage = () => {
                 minWidth: '90%'}}>
                 <Typography variant='h5' sx={{ padding: 2 }}> SHOPPING CART</Typography>
                 <br/>
-                {isError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
+                {errorMessage && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                     color="error"
                     variant="standard">     
-                    Error fetching user data</Alert>}
-                <Grid2 container spacing={2}
+                    {errorMessage}</Alert>}
+                {!isError && <Grid2 container spacing={2}
                     columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
                     sx={{ width: '100%',
                         gap: 1,
@@ -58,12 +76,13 @@ const CartPage = () => {
                         justifyContent: 'space-evenly',
                         textAlign: 'center'
                     }}>
-                    <Box sx={{ display: 'flex',
-                        flexDirection: 'row',
-                        width: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: 1.5 }}>
+                    <Box key='head-row' 
+                        sx={{ display: 'flex',
+                            flexDirection: 'row',
+                            width: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 1.5 }}>
                         <Grid2 size={2}>
                             <Typography >
                                 <b>Image</b>
@@ -86,12 +105,13 @@ const CartPage = () => {
                         </Grid2>
                     </Box>
                     {(data?.cart && data.cart.length > 0) && data.cart.map(item => (
-                        <Box key={item.id} sx={{ display: 'flex',
-                            flexDirection: 'row',
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 1.5 }}>
+                        <Box key={item.id}
+                            sx={{ display: 'flex',
+                                flexDirection: 'row',
+                                width: '100%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: 1.5 }}>
                             <Grid2 size={2}>
                                 <img src={item.images[0]} style={{ width: '50%', height: 100 }}/>
                             </Grid2>
@@ -122,11 +142,11 @@ const CartPage = () => {
                             </Grid2>
                         </Box>
                     ))}
-                </Grid2>
+                </Grid2>}
                 <br/>
             </Card>
             <br/>
-            <Typography variant='h6'>Total price: {cartTotal()} €</Typography>
+            {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
         </Box>
     )
 }

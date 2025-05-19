@@ -46,10 +46,10 @@ const LoginPage = () => {
     }
 
     useEffect(() => {
-        if (userDetails && isSuccess) {
+        if (token && userDetails && isSuccess) {
             navigate('/profilepage')
         }
-    }, [isSuccess, userDetails, navigate])
+    }, [isSuccess, userDetails, token, navigate])
 
     return (
         <Box sx={{ display: 'flex',

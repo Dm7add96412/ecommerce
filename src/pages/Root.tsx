@@ -17,7 +17,7 @@ const Root = () => {
     const [userId, setUserId] = useState<string>('')
     const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
 
-    const { data, isError } = useFetchUserQuery(
+    const { data, isError, isFetching } = useFetchUserQuery(
         { id: userId, token: token },
         { skip: !authUserId || !authToken }
     )
@@ -31,7 +31,7 @@ const Root = () => {
     }
 
     const cartQuantity = () => {
-        if (isError) {
+        if (!authToken && isError && !isFetching) {
             console.log('could not fetch user data')
         }
         if (authToken && data?.cart && data?.cart.length > 0) {
@@ -133,7 +133,6 @@ const Root = () => {
                             <IconButton color='inherit' component={Link} to='/login'>
                                 <LoginIcon/>
                             </IconButton>}
-
                     </Box>
                 </Toolbar>
             </AppBar>

@@ -3,23 +3,35 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import { Link as RouterLink } from "react-router-dom"
 import { useEffect, useState } from "react"
 
-import useAppDispatch from "../hooks/useAppDispatch"
-import { addToCart } from "../redux/reducers/cartReducer"
 import Product from "../types/Product"
 import RenderProductsProp from "../types/RenderProductsProp"
 import HandlePagination from "./HandlePagination"
+import { CartItem } from "../types/CartItem"
+import { useFetchUserQuery, useUpdateUserMutation } from "../redux/api/userApi"
+import useAppSelector from "../hooks/useAppSelector"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
-    const dispatch = useAppDispatch()
     const [page, setPage] = useState<number>(1)
     const [products, setProducts] = useState<Product[]>([])
     const [sortPrice, setSortPrice] = useState<string>('')
     const [sortAlpha, setSortAlpha] = useState<string>('')
     const [sorting, setSorting] = useState<boolean>(false)
     const [sorted, setSorted] = useState<string>('')
+    const [token, setToken] = useState<string>('')
+    const [userId, setUserId] = useState<string>('')
+    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
+    const { data } = useFetchUserQuery({ id: userId, token: token })
+    const [updateUser] = useUpdateUserMutation()
 
     const limit = 16
     const offset = (page - 1) * limit
+
+    useEffect(() => {
+        if (authToken && authUserId) {
+            setToken(authToken)
+            setUserId(authUserId)
+        } 
+    }, [authUserId, authToken])
 
     useEffect(() => {
         setProducts([...productsList])
@@ -27,8 +39,18 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
 
     const productsPaginated = products.slice(offset, offset + limit)
 
-    const onAddToCart = (payload: Product) => {
-        dispatch(addToCart(payload))
+    const onAddToCart = async (product: Product) => {
+        const id = product.id.toString()
+        if (data && data.cart) {
+            const foundItem = data.cart.find(item => item.id === id)
+            if (foundItem) {
+            const updatedItem: CartItem = { ...foundItem, quantity: foundItem.quantity + 1 }
+            await updateUser({ id: userId, token, cartItem: updatedItem })
+            } else {
+                const newItem: CartItem = { ...product, quantity: 1 }
+                await updateUser({ id: userId, token, cartItem: newItem })
+        }
+        }
     }
 
     const sortByPrice = (event: SelectChangeEvent) => {
@@ -159,13 +181,13 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                         <b>{product.price} €</b>
                                     </Typography>
                                 </Box>
-                                <AddShoppingCartIcon
+                                {authToken && <AddShoppingCartIcon
                                     onClick={(e) => {e.preventDefault(); onAddToCart(product)}}
                                     sx={{ transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
                                         '&:hover': {
                                             transform: 'scale(1.2)',
                                             color: 'primary.main' }
-                                    }}/>
+                                    }}/>}
                             </Box>
                         </Card>
                     </Link>
