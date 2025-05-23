@@ -6,9 +6,8 @@ import { useEffect, useState } from "react"
 import Product from "../types/Product"
 import RenderProductsProp from "../types/RenderProductsProp"
 import HandlePagination from "./HandlePagination"
-import { CartItem } from "../types/CartItem"
-import { useFetchUserQuery, useUpdateUserMutation } from "../redux/api/userApi"
 import useAppSelector from "../hooks/useAppSelector"
+import useAddToCart from "../hooks/useAddToCart"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [page, setPage] = useState<number>(1)
@@ -17,41 +16,17 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [sortAlpha, setSortAlpha] = useState<string>('')
     const [sorting, setSorting] = useState<boolean>(false)
     const [sorted, setSorted] = useState<string>('')
-    const [token, setToken] = useState<string>('')
-    const [userId, setUserId] = useState<string>('')
-    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
-    const { data } = useFetchUserQuery({ id: userId, token: token })
-    const [updateUser] = useUpdateUserMutation()
+    const { token } = useAppSelector(state => state.authReducer)
+    const addToCart = useAddToCart()
 
     const limit = 16
     const offset = (page - 1) * limit
-
-    useEffect(() => {
-        if (authToken && authUserId) {
-            setToken(authToken)
-            setUserId(authUserId)
-        } 
-    }, [authUserId, authToken])
 
     useEffect(() => {
         setProducts([...productsList])
     }, [productsList])
 
     const productsPaginated = products.slice(offset, offset + limit)
-
-    const onAddToCart = async (product: Product) => {
-        const id = product.id.toString()
-        if (data && data.cart) {
-            const foundItem = data.cart.find(item => item.id === id)
-            if (foundItem) {
-            const updatedItem: CartItem = { ...foundItem, quantity: foundItem.quantity + 1 }
-            await updateUser({ id: userId, token, cartItem: updatedItem })
-            } else {
-                const newItem: CartItem = { ...product, quantity: 1 }
-                await updateUser({ id: userId, token, cartItem: newItem })
-        }
-        }
-    }
 
     const sortByPrice = (event: SelectChangeEvent) => {
         setSorting(true)
@@ -143,7 +118,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
             {productsPaginated.map(product => (
                 <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
                     key={product.id} 
-                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', padding: 0.5 }}>
+                    sx={{ display: 'flex', justifyContent: 'center', width: '100%',   padding: 0.5 }}>
                     <Link component={RouterLink}
                         to={`/singleproduct/${product.id}`}
                         style={{ textDecoration: 'none', display: 'container', width: '100%', height: '100%' }}
@@ -181,8 +156,8 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                         <b>{product.price} €</b>
                                     </Typography>
                                 </Box>
-                                {authToken && <AddShoppingCartIcon
-                                    onClick={(e) => {e.preventDefault(); onAddToCart(product)}}
+                                {token && <AddShoppingCartIcon
+                                    onClick={(e) => {e.preventDefault(); addToCart(product)}}
                                     sx={{ transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
                                         '&:hover': {
                                             transform: 'scale(1.2)',

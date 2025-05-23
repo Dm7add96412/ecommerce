@@ -28,7 +28,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
-            setFetchError('Error fetching user data')
+            setFetchError('Error fetching user data / timeout')
             setTimeout(() => {
                 setUserId('')
                 setToken('')

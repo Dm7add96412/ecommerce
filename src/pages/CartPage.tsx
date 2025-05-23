@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Card, Grid2, IconButton, Typography } from '@mui/material';
+import { Alert, Box, Card, Grid2, IconButton, TextField, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,8 @@ const CartPage = () => {
     const dispatch = useAppDispatch()
     const [token, setToken] = useState<string>('')
     const [userId, setUserId] = useState<string>('')
+    const [itemQuantity, setItemQuantity] = useState<string | number>('')
+    const [itemId, setItemId] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
     const { data, isError, isFetching } = useFetchUserQuery({ id: userId, token: token })
@@ -29,7 +31,7 @@ const CartPage = () => {
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
-            setErrorMessage('Error fetching user data')
+            setErrorMessage('Error fetching user data / timeout')
             setTimeout(() => {
                 setUserId('')
                 setToken('')
@@ -47,6 +49,30 @@ const CartPage = () => {
     const onRemoveFromCart = async (cartItem: CartItem) => {
         const updatedItem: CartItem = { ...cartItem, quantity: cartItem.quantity - 1 }
         await updateUser({ id: userId, token, cartItem: updatedItem })
+    }
+
+    const handleItemQuantity = (quantity: string, id: string) => {
+        setItemId(id);
+        setItemQuantity(quantity);
+    }
+
+    const onInsertManualCart = async (cartItem: CartItem) => {
+        const numbered = Number(itemQuantity)
+        if (itemId !== cartItem.id) {
+            setItemQuantity('')
+            setItemId('')
+            return
+        }
+        if (itemQuantity === '') {
+            setItemId('')
+            return
+        }
+        if (numbered) {
+            const updatedItem: CartItem = { ...cartItem, quantity: numbered }
+            await updateUser({ id: userId, token, cartItem: updatedItem })
+            setItemQuantity('')
+            setItemId('')
+        }
     }
 
     const cartTotal = () => {
@@ -130,14 +156,28 @@ const CartPage = () => {
                                     flexDirection: 'row',
                                     justifyContent: 'center',
                                     alignItems: 'center' }}>
-                                <IconButton onClick={() => onAddToCart(item)}>
-                                    <AddIcon/>
-                                </IconButton>
-                                <Typography>
-                                    {item.quantity}
-                                </Typography>
                                 <IconButton onClick={() => onRemoveFromCart(item)}>
                                     <RemoveIcon/>
+                                </IconButton>
+                                <TextField
+                                    variant='standard'
+                                    size='small'
+                                    inputMode='text'
+                                    value={itemId === item.id ? itemQuantity : item.quantity}
+                                    onChange={event => handleItemQuantity(event.target.value, item.id)}
+                                    onBlur={() => onInsertManualCart(item)}
+                                    sx={{
+                                        width: `${String(item.quantity).length + 1}ch`,
+                                        minWidth: `${String(item.quantity).length + 1}ch`,
+                                        height: 'auto',
+                                        textAlign: 'center',
+                                        '& input': {
+                                            textAlign: 'center',
+                                            padding: 0,
+                                        },
+                                    }}/>
+                                <IconButton onClick={() => onAddToCart(item)}>
+                                    <AddIcon/>
                                 </IconButton>
                             </Grid2>
                         </Box>
