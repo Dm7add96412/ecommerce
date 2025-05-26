@@ -4,10 +4,10 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { useLoginMutation } from "../redux/api/authApi"
-import { ApiError } from "../types/ApiError"
 import { useFetchUserQuery } from "../redux/api/userApi"
 import useAppDispatch from "../hooks/useAppDispatch"
 import { loginAuth } from "../redux/reducers/authReducer"
+import { isApiError } from "../utils/apiError"
 
 const LoginPage = () => {
     const [username, setUserName] = useState<string>('')
@@ -20,11 +20,8 @@ const LoginPage = () => {
     const dispatch = useAppDispatch()
 
     const { data: userDetails, isSuccess } = useFetchUserQuery(
-        { id: userId, token: token })
-    
-    function isApiError(error: unknown): error is ApiError {
-        return typeof error ==='object' && error !== null && 'data' in error
-    }
+        { id: userId, token: token },
+        { skip: !userId || !token })
 
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()

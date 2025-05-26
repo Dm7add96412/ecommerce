@@ -1,4 +1,4 @@
-import { Box, Card, Grid2, Typography, Link, Button, Alert, InputLabel, Select, MenuItem, FormControl, SelectChangeEvent } from "@mui/material"
+import { Box, Card, Grid2, Typography, Link, Button, Alert, InputLabel, Select, MenuItem, FormControl, SelectChangeEvent, Badge } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 import { Link as RouterLink } from "react-router-dom"
 import { useEffect, useState } from "react"
@@ -8,6 +8,7 @@ import RenderProductsProp from "../types/RenderProductsProp"
 import HandlePagination from "./HandlePagination"
 import useAppSelector from "../hooks/useAppSelector"
 import useAddToCart from "../hooks/useAddToCart"
+import { useFetchUserQuery } from "../redux/api/userApi"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [page, setPage] = useState<number>(1)
@@ -16,8 +17,14 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [sortAlpha, setSortAlpha] = useState<string>('')
     const [sorting, setSorting] = useState<boolean>(false)
     const [sorted, setSorted] = useState<string>('')
-    const { token } = useAppSelector(state => state.authReducer)
+    const [token, setToken] = useState<string>('')
+    const [userId, setUserId] = useState<string>('')
+    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
     const addToCart = useAddToCart()
+
+    const { data } = useFetchUserQuery(
+        { id: userId, token: token }
+    )
 
     const limit = 16
     const offset = (page - 1) * limit
@@ -25,6 +32,22 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     useEffect(() => {
         setProducts([...productsList])
     }, [productsList])
+
+    useEffect(() => {
+    if (authToken && authUserId) {
+        setToken(authToken)
+        setUserId(authUserId)
+    }
+    }, [authToken, authUserId])
+
+    const ifInCartQuantity = (productId: string) => {
+        if (data && data.cart) {
+            const foundItem = data.cart.find(item => item.id === productId.toString())
+            if (foundItem) {
+                return foundItem.quantity
+            }
+        }
+    }
 
     const productsPaginated = products.slice(offset, offset + limit)
 
@@ -118,7 +141,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
             {productsPaginated.map(product => (
                 <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
                     key={product.id} 
-                    sx={{ display: 'flex', justifyContent: 'center', width: '100%',   padding: 0.5 }}>
+                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%', padding: 0.5 }}>
                     <Link component={RouterLink}
                         to={`/singleproduct/${product.id}`}
                         style={{ textDecoration: 'none', display: 'container', width: '100%', height: '100%' }}
@@ -156,13 +179,14 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                         <b>{product.price} €</b>
                                     </Typography>
                                 </Box>
-                                {token && <AddShoppingCartIcon
+                                {authToken && <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
+                                    <AddShoppingCartIcon color="info"
                                     onClick={(e) => {e.preventDefault(); addToCart(product)}}
                                     sx={{ transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
                                         '&:hover': {
                                             transform: 'scale(1.2)',
                                             color: 'primary.main' }
-                                    }}/>}
+                                    }}/></Badge>}
                             </Box>
                         </Card>
                     </Link>

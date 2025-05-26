@@ -30,7 +30,7 @@ const ProductsByCategoryPage = () => {
 
     return (
         <Box sx={{ justifyItems: 'center', width: '100%' }}>
-            <Box sx={{ justifyItems: 'center', width: '100%'  }}>
+            <Box sx={{ justifyItems: 'center', width: '100%', padding: 1 }}>
             {isLoading && <CircularProgress/>}
             {isError && <Alert sx={{ alignItems: 'center' }}
                 color="error"
@@ -39,14 +39,13 @@ const ProductsByCategoryPage = () => {
             {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center' }}
                 color="warning"
                 variant="standard">
-                No products found in category: {categoryName}
+                No products found in category: <u><b>{categoryName}</b></u>
                 </Alert>}
             {(!isLoading && (!isError && products.length > 0)) && <Alert sx={{ alignItems: 'center' }}
                 color="success"
                 variant="standard">
                 Products in category: <u><b>{products[0].category?.name}</b></u>
                 </Alert>}
-                <br/>
             </Box>
             <Box sx={{ justifyItems: 'center', width: '100%' }}>
                 {(!isLoading && (!isError && products.length > 0)) && <RenderProducts productsList={products}/>}

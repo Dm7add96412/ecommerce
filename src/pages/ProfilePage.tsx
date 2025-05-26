@@ -6,6 +6,7 @@ import { useFetchUserQuery } from "../redux/api/userApi"
 import useAppDispatch from "../hooks/useAppDispatch"
 import { logoutAuth } from "../redux/reducers/authReducer"
 import useAppSelector from "../hooks/useAppSelector"
+import { isApiError } from "../utils/apiError"
 
 const ProfilePage = () => {
     const navigate = useNavigate()
@@ -15,7 +16,7 @@ const ProfilePage = () => {
     const dispatch = useAppDispatch()
     const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
 
-    const { data, isError, isFetching } = useFetchUserQuery(
+    const { data, isError, isFetching, error } = useFetchUserQuery(
         { id: userId, token: token }
     )
     
@@ -28,7 +29,11 @@ const ProfilePage = () => {
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
-            setFetchError('Error fetching user data / timeout')
+            if (isApiError(error)) {
+                setFetchError(error.data.error)
+            } else {
+                setFetchError('Error fetching user data / timeout')
+            }
             setTimeout(() => {
                 setUserId('')
                 setToken('')
@@ -37,7 +42,7 @@ const ProfilePage = () => {
                 navigate('/login')
             }, 5000)
         }
-    }, [isError, data, isFetching, navigate, dispatch])
+    }, [isError, data, isFetching, navigate, dispatch, error])
 
     const logOut = () => {
         dispatch(logoutAuth())

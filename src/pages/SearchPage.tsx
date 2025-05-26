@@ -18,8 +18,15 @@ const SearchPage = () => {
     }, [data, searchWord])
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', justifyContent: 'center' }}>
-            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                justifyContent: 'center' }}>
+            <Box sx={{ display: 'flex',
+                    width: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: 1 }}>
                 {isLoading && <CircularProgress sx={{ justifySelf: 'center' }}/>}
                 {(isError && !isLoading) && <Alert sx={{ alignItems: 'center' }}
                     color="error"

@@ -9,6 +9,7 @@ import { useFetchUserQuery, useUpdateUserMutation } from '../redux/api/userApi';
 import { CartItem } from '../types/CartItem';
 import useAppDispatch from '../hooks/useAppDispatch';
 import { logoutAuth } from '../redux/reducers/authReducer';
+import { isApiError } from '../utils/apiError';
 
 const CartPage = () => {
     const navigate = useNavigate()
@@ -19,7 +20,7 @@ const CartPage = () => {
     const [itemId, setItemId] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
-    const { data, isError, isFetching } = useFetchUserQuery({ id: userId, token: token })
+    const { data, isError, isFetching, error } = useFetchUserQuery({ id: userId, token: token })
     const [updateUser] = useUpdateUserMutation()
 
     useEffect(() => {
@@ -31,7 +32,11 @@ const CartPage = () => {
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
-            setErrorMessage('Error fetching user data / timeout')
+            if (isApiError(error)) {
+                setErrorMessage(error.data.error)
+            } else {
+                setErrorMessage('Error fetching user data / timeout')
+            }
             setTimeout(() => {
                 setUserId('')
                 setToken('')
@@ -39,7 +44,7 @@ const CartPage = () => {
                 navigate('/login')
             }, 5000)
         }
-    }, [isError, data, token, isFetching, navigate, dispatch])
+    }, [isError, data, token, isFetching, navigate, dispatch, error])
 
     const onAddToCart = async (cartItem: CartItem) => {
         const updatedItem: CartItem = { ...cartItem, quantity: cartItem.quantity + 1 }

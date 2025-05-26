@@ -59,11 +59,11 @@ const ProductPage = () => {
                                 justifyContent: 'center',
                                 padding: 1,
                                 gap: 3 }}>
-                            <Typography fontSize={20}>
+                            <Typography fontSize={19}>
                                 Price: <b>{data.price} €</b>
                             </Typography>
                             <Typography>
-                                {token && <Button variant='contained' size='large' onClick={() => addToCart(data)}>
+                                {token && <Button variant='contained' size='medium' onClick={() => addToCart(data)}>
                                     <AddShoppingCartIcon/>  Add to cart
                                 </Button>}
                             </Typography>
