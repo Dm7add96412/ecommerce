@@ -22,7 +22,7 @@ const useAddToCart = () => {
         if (authToken && authUserId) {
             setToken(authToken)
             setUserId(authUserId)
-        } 
+        }
     }, [authUserId, authToken])
 
     useEffect(() => {
@@ -37,7 +37,7 @@ const useAddToCart = () => {
             dispatch(logoutAuth())
             navigate('/login')
         }
-    }, [isError, data, token, isFetching, navigate, dispatch, error])
+    }, [isError, data, isFetching, navigate, dispatch, error])
 
     const addToCart = useCallback(
         async (product: Product) => {

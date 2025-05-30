@@ -1,6 +1,6 @@
 import { AppBar, Badge, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, NavLink, useLocation } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
@@ -16,6 +16,7 @@ const Root = () => {
     const [token, setToken] = useState<string>('')
     const [userId, setUserId] = useState<string>('')
     const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
+    const location = useLocation()
 
     const { data, isError, isFetching } = useFetchUserQuery(
         { id: userId, token: token },
@@ -115,22 +116,44 @@ const Root = () => {
                         </Typography>
                     </Box>
                     <Box sx={{ flex: 1, display: { xs: 'none', md: 'flex'}, justifyContent: 'center', gap: 4, textAlign: 'center' }}>
-                        <Button color='inherit' component={Link} to='/'>Homepage</Button>
-                        <Button color='inherit' component={Link} to='/products'>Products</Button>
-                        <Button color='inherit' component={Link} to='/categories'>Categories</Button>
+                        <Button color='inherit'
+                                component={NavLink}
+                                to='/'
+                                sx={{ borderBottom: location.pathname === '/' ? "2px solid white" : "none" }}>
+                                    Homepage
+                                </Button>
+                        <Button color='inherit'
+                                component={NavLink}
+                                to='/products'
+                                sx={{ borderBottom: location.pathname === '/products' ? "2px solid white" : "none" }}>
+                                    Products
+                                </Button>
+                        <Button color='inherit'
+                                component={NavLink}
+                                to='/categories'
+                                sx={{ borderBottom: location.pathname === '/categories' ? "2px solid white" : "none" }}>
+                                    Categories
+                                </Button>
                         <Badge badgeContent={cartQuantity()} color='error'>
-                        <IconButton color='inherit' component={Link} to={authToken ? '/shoppingcart' : '/login'}>
+                        <IconButton color='inherit'
+                                    component={NavLink}
+                                    to={authToken ? '/shoppingcart' : '/login'}
+                                    sx={{ borderBottom: location.pathname === '/shoppingcart' ? "2px solid white" : "none" }}>
                             <ShoppingCartIcon/>
                         </IconButton>
                         </Badge>  
                     </Box>
-                    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
                         <Search/>
                         {authToken ?
-                            <IconButton color='inherit' component={Link} to='/profilepage'>
+                            <IconButton color='inherit'
+                                component={NavLink} to='/profilepage'
+                                sx={{ borderBottom: location.pathname === '/profilepage' ? "2px solid white" : "none" }}>
                                 <AccountCircleIcon/>
                             </IconButton> :
-                            <IconButton color='inherit' component={Link} to='/login'>
+                            <IconButton color='inherit'
+                                component={NavLink} to='/login'
+                                sx={{ borderBottom: location.pathname === '/login' ? "2px solid white" : "none" }}>
                                 <LoginIcon/>
                             </IconButton>}
                     </Box>
