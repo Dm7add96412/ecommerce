@@ -4,7 +4,7 @@ import ReturnedUser from "../../types/ReturnedUser";
 
 const authApi = createApi({
     reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/login' }),
+    baseQuery: fetchBaseQuery({ baseUrl: '/api/login' }),
     tagTypes: ['User'],
     endpoints: builder => ({
         login: builder.mutation<ReturnedUser, User>({

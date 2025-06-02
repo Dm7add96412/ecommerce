@@ -5,7 +5,7 @@ import UserQuery from "../../types/UserQuery";
 
 const userApi = createApi({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8080/api/users' }),
+    baseQuery: fetchBaseQuery({ baseUrl: '/api/users' }),
     tagTypes: ['User'],
     endpoints: builder => ({
         fetchUser: builder.query<User, UserQuery>({

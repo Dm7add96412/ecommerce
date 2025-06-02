@@ -52,9 +52,27 @@ const Root = () => {
             <AppBar position='static'>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                        <IconButton  color='inherit' component={Link} to='/' >
-                            <HomeIcon/>
-                        </IconButton>
+                        <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
+                            <IconButton  color='inherit' component={Link} to='/' >
+                                <HomeIcon/>
+                            </IconButton>
+                            <Typography variant='h6'
+                                noWrap
+                                component='a'
+                                sx={{
+                                    alignItems: 'center',
+                                    mr: 2,
+                                    display: { xs: 'none', md: 'flex' },
+                                    fontFamily: 'sans-serif',
+                                    fontWeight: 700,
+                                    letterSpacing: '.3rem',
+                                    color: 'inherit',
+                                    textDecoration: 'none',
+                                    }}>
+                                E-COMMERCE
+                            </Typography>
+                        </Box>
+
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                             <IconButton size='large'
                                 color='inherit'
@@ -69,51 +87,37 @@ const Root = () => {
                                 onClose={handleCloseNavMenu}>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={Link} to='/products'>
+                                            component={NavLink} to='/products'>
                                             Products
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={Link} to='/categories'>
+                                            component={NavLink} to='/categories'>
                                             Categories
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={Link} to={authToken ? '/shoppingcart' : '/login'}>
+                                            component={NavLink} to={authToken ? '/shoppingcart' : '/login'}>
                                             Cart
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         {authToken ? 
                                             <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={Link} to='/profilepage'>
+                                            component={NavLink} to='/profilepage'>
                                             Profile
                                             </Typography> :
                                             <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={Link} to='/login'>
+                                            component={NavLink} to='/login'>
                                             Login
                                             </Typography>}
 
                                     </MenuItem>
                             </Menu>
                         </Box>
-                        <Typography variant='h6'
-                            noWrap
-                            component='a'
-                            sx={{
-                                alignItems: 'center',
-                                mr: 2,
-                                display: { xs: 'none', md: 'flex' },
-                                fontFamily: 'sans-serif',
-                                fontWeight: 700,
-                                letterSpacing: '.3rem',
-                                color: 'inherit',
-                                textDecoration: 'none',
-                                }}>
-                            E-COMMERCE
-                        </Typography>
+
                     </Box>
                     <Box sx={{ flex: 1, display: { xs: 'none', md: 'flex'}, justifyContent: 'center', gap: 4, textAlign: 'center' }}>
                         <Button color='inherit'
