@@ -4,31 +4,22 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 
-import useAppSelector from '../hooks/useAppSelector';
 import { useFetchUserQuery, useUpdateUserMutation } from '../redux/api/userApi';
 import { CartItem } from '../types/CartItem';
 import useAppDispatch from '../hooks/useAppDispatch';
 import { logoutAuth } from '../redux/reducers/authReducer';
 import { isApiError } from '../utils/apiError';
+import useAuthenticate from '../hooks/useAuthenticate';
 
 const CartPage = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    const [token, setToken] = useState<string>('')
-    const [userId, setUserId] = useState<string>('')
     const [itemQuantity, setItemQuantity] = useState<string | number>('')
     const [itemId, setItemId] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
+    const { token, userId, logOut } = useAuthenticate()
     const { data, isError, isFetching, error } = useFetchUserQuery({ id: userId, token: token })
     const [updateUser] = useUpdateUserMutation()
-
-    useEffect(() => {
-        if (authToken && authUserId) {
-            setToken(authToken)
-            setUserId(authUserId)
-        } 
-    }, [authUserId, authToken])
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
@@ -38,13 +29,12 @@ const CartPage = () => {
                 setErrorMessage('Error fetching user data / timeout')
             }
             setTimeout(() => {
-                setUserId('')
-                setToken('')
                 dispatch(logoutAuth())
+                logOut()
                 navigate('/login')
             }, 5000)
         }
-    }, [isError, data, token, isFetching, navigate, dispatch, error])
+    }, [isError, data, isFetching, navigate, dispatch, error, logOut])
 
     const onAddToCart = async (cartItem: CartItem) => {
         const updatedItem: CartItem = { ...cartItem, quantity: cartItem.quantity + 1 }

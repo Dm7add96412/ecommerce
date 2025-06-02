@@ -1,32 +1,22 @@
-import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Alert, Badge, Box, Button, Card, CircularProgress, Grid2, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 
 import { useFetchProductQuery } from "../redux/api/productApis"
-import useAppSelector from "../hooks/useAppSelector"
 import useAddToCart from "../hooks/useAddToCart"
 import { useFetchUserQuery } from "../redux/api/userApi"
+import useAuthenticate from "../hooks/useAuthenticate"
 
 const ProductPage = () => {
     const params = useParams()
     const productId = params.productId
     const { data, isError, isLoading } = useFetchProductQuery(productId ?? '')
-    const [token, setToken] = useState<string>('')
-    const [userId, setUserId] = useState<string>('')
-    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
     const addToCart = useAddToCart()
+    const { token, userId } = useAuthenticate()
 
     const { data: userData } = useFetchUserQuery(
         { id: userId, token: token }
     )
-
-    useEffect(() => {
-    if (authToken && authUserId) {
-        setToken(authToken)
-        setUserId(authUserId)
-    }
-    }, [authToken, authUserId])
 
     const ifInCartQuantity = (productId: string) => {
         if (userData && userData.cart) {
@@ -87,7 +77,7 @@ const ProductPage = () => {
                                 Price: <b>{data.price} €</b>
                             </Typography>
                             <Typography>
-                                {authToken && <Badge badgeContent={ifInCartQuantity(data.id)} color='error'>
+                                {token && <Badge badgeContent={ifInCartQuantity(data.id)} color='error'>
                                     <Button variant='contained' size='medium' onClick={() => addToCart(data)}>
                                     <AddShoppingCartIcon/>  Add to cart
                                 </Button>

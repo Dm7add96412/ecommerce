@@ -77,6 +77,7 @@ const LoginPage = () => {
                     value={password}
                     onChange={event => setPassword(event.target.value)}/>
                 <Button variant='contained' type='submit'>Login</Button>
+                <Typography variant='body2'>Please log in to start shopping</Typography>
                 {loginError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                     color="error"
                     variant="standard">     

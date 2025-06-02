@@ -5,27 +5,18 @@ import { useNavigate } from "react-router-dom"
 import { useFetchUserQuery } from "../redux/api/userApi"
 import useAppDispatch from "../hooks/useAppDispatch"
 import { logoutAuth } from "../redux/reducers/authReducer"
-import useAppSelector from "../hooks/useAppSelector"
 import { isApiError } from "../utils/apiError"
+import useAuthenticate from "../hooks/useAuthenticate"
 
 const ProfilePage = () => {
     const navigate = useNavigate()
-    const [token, setToken] = useState<string>('')
-    const [userId, setUserId] = useState<string>('')
     const [fetchError, setFetchError] = useState<string>('')
     const dispatch = useAppDispatch()
-    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
+    const { token, userId, logOut: authLogOut } = useAuthenticate()
 
     const { data, isError, isFetching, error } = useFetchUserQuery(
         { id: userId, token: token }
     )
-    
-    useEffect(() => {
-        if (authToken && authUserId) {
-            setToken(authToken)
-            setUserId(authUserId)
-        } 
-    }, [authUserId, authToken])
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
@@ -35,19 +26,17 @@ const ProfilePage = () => {
                 setFetchError('Error fetching user data / timeout')
             }
             setTimeout(() => {
-                setUserId('')
-                setToken('')
                 setFetchError('')
                 dispatch(logoutAuth())
+                authLogOut()
                 navigate('/login')
             }, 5000)
         }
-    }, [isError, data, isFetching, navigate, dispatch, error])
+    }, [isError, data, isFetching, navigate, dispatch, error, authLogOut])
 
     const logOut = () => {
         dispatch(logoutAuth())
-        setToken('')
-        setUserId('')
+        authLogOut()
         navigate('/login')
     }
 
@@ -60,6 +49,8 @@ const ProfilePage = () => {
             gap: 1.5 }}>
             <Typography variant="h5">PROFILE PAGE</Typography>
             <Typography>This is the profile page of <u>{data?.username}</u></Typography>
+            <Typography>Your shopping cart currently has <b>{data?.cart?.length}</b> items</Typography>
+            <Typography>Happy shopping!</Typography>
             <Button variant='contained' onClick={logOut}>Logout</Button>
             {fetchError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                 color="error"

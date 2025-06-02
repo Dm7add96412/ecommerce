@@ -6,9 +6,9 @@ import { useEffect, useState } from "react"
 import Product from "../types/Product"
 import RenderProductsProp from "../types/RenderProductsProp"
 import HandlePagination from "./HandlePagination"
-import useAppSelector from "../hooks/useAppSelector"
 import useAddToCart from "../hooks/useAddToCart"
 import { useFetchUserQuery } from "../redux/api/userApi"
+import useAuthenticate from "../hooks/useAuthenticate"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [page, setPage] = useState<number>(1)
@@ -17,10 +17,8 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [sortAlpha, setSortAlpha] = useState<string>('')
     const [sorting, setSorting] = useState<boolean>(false)
     const [sorted, setSorted] = useState<string>('')
-    const [token, setToken] = useState<string>('')
-    const [userId, setUserId] = useState<string>('')
-    const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
     const addToCart = useAddToCart()
+    const { token, userId } = useAuthenticate()
 
     const { data } = useFetchUserQuery(
         { id: userId, token: token }
@@ -32,13 +30,6 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     useEffect(() => {
         setProducts([...productsList])
     }, [productsList])
-
-    useEffect(() => {
-    if (authToken && authUserId) {
-        setToken(authToken)
-        setUserId(authUserId)
-    }
-    }, [authToken, authUserId])
 
     const ifInCartQuantity = (productId: string) => {
         if (data && data.cart) {
@@ -179,7 +170,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                         <b>{product.price} €</b>
                                     </Typography>
                                 </Box>
-                                {authToken && <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
+                                {token && <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
                                     <AddShoppingCartIcon color="info"
                                     onClick={(e) => {e.preventDefault(); addToCart(product)}}
                                     sx={{ transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
