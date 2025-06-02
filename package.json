@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && Remove-Item -Path ../ecommerce-backend/dist/public/* -Recurse -Force && cp -r ./dist/* ../ecommerce-backend/dist/public",
+    "build": "tsc -b && vite build && @powershell Remove-Item -Recurse -Force ../ecommerce-backend/dist/public/* && @powershell Copy-Item ./dist/* -Recurse ../ecommerce-backend/dist/public",
     "lint": "eslint .",
     "preview": "vite preview"
   },
