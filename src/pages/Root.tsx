@@ -123,26 +123,34 @@ const Root = () => {
                         <Button color='inherit'
                                 component={NavLink}
                                 to='/'
-                                sx={{ borderBottom: location.pathname === '/' ? "2px solid white" : "none" }}>
+                                sx={{ boxShadow: location.pathname === '/' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
+                                    opacity: location.pathname === '/' ? 1 : 0.8
+                                 }}>
                                     Homepage
                                 </Button>
                         <Button color='inherit'
                                 component={NavLink}
                                 to='/products'
-                                sx={{ borderBottom: location.pathname === '/products' ? "2px solid white" : "none" }}>
+                                sx={{ boxShadow: location.pathname === '/products' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
+                                    opacity: location.pathname === '/products' ? 1 : 0.8
+                                 }}>
                                     Products
                                 </Button>
                         <Button color='inherit'
                                 component={NavLink}
                                 to='/categories'
-                                sx={{ borderBottom: location.pathname === '/categories' ? "2px solid white" : "none" }}>
+                                sx={{ boxShadow: location.pathname === '/categories' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
+                                    opacity: location.pathname === '/categories' ? 1 : 0.8
+                                 }}>
                                     Categories
                                 </Button>
                         <Badge badgeContent={cartQuantity()} color='error'>
                         <IconButton color='inherit'
                                     component={NavLink}
                                     to={authToken ? '/shoppingcart' : '/login'}
-                                    sx={{ borderBottom: location.pathname === '/shoppingcart' ? "2px solid white" : "none" }}>
+                                    sx={{ boxShadow: location.pathname === '/shoppingcart' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
+                                        opacity: location.pathname === '/shoppingcart' ? 1 : 0.8
+                                     }}>
                             <ShoppingCartIcon/>
                         </IconButton>
                         </Badge>  
@@ -152,12 +160,16 @@ const Root = () => {
                         {authToken ?
                             <IconButton color='inherit'
                                 component={NavLink} to='/profilepage'
-                                sx={{ borderBottom: location.pathname === '/profilepage' ? "2px solid white" : "none" }}>
+                                sx={{ boxShadow: location.pathname === '/profilepage' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
+                                    opacity: location.pathname === '/profilepage' ? 1 : 0.8
+                                 }}>
                                 <AccountCircleIcon/>
                             </IconButton> :
                             <IconButton color='inherit'
                                 component={NavLink} to='/login'
-                                sx={{ borderBottom: location.pathname === '/login' ? "2px solid white" : "none" }}>
+                                sx={{ boxShadow: location.pathname === '/login' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
+                                    opacity: location.pathname === '/login' ? 1 : 0.8
+                                 }}>
                                 <LoginIcon/>
                             </IconButton>}
                     </Box>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Card, Grid2, IconButton, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Card, Grid2, IconButton, TextField, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
@@ -181,7 +181,13 @@ const CartPage = () => {
                 <br/>
             </Card>
             <br/>
-            {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
+            <Box sx={{ display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+             }}>
+                {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
+                <Button variant='contained'>Proceed to checkout</Button>
+            </Box>
         </Box>
     )
 }
