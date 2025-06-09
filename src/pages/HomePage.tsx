@@ -17,6 +17,7 @@ const HomePage = () => {
             <Typography> Welcome to this fancy E-commerce website! 
                 Enjoy your fake shopping! :)
             </Typography>
+            <Typography>Please login to use the shopping cart.</Typography>
             <Box sx={{ display: 'flex',
                     flexDirection: 'row',
                     gap: 4
