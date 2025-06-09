@@ -1,7 +1,10 @@
 # Ecommerce App
 
-A Vite / React / Typescript E-commerce project with a separate backend for user/cart data and login.
-Product and category data fetched from https://api.escuelajs.co/docs
+A Vite / React / Typescript fake e-commerce project with a separate backend for user/cart data and login.
+Product and category data fetched from https://fakeapi.platzi.com/en<br>
+
+Here's the documentation for the API:<br>
+https://api.escuelajs.co/docs
 
 # Requirements
 
