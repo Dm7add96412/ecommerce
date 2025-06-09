@@ -16,7 +16,7 @@ git clone, npm install and npm run dev
 
 # Testing
 
-You can test use these demo/test credentials to test use the app and the shopping cart:
+You can test use these demo/test credentials to test use the app (once I get it deployed somewhere =) ) and the shopping cart:
 
 Tester 1
 password1234
