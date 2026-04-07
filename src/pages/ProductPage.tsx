@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { Alert, Badge, Box, Button, Card, CircularProgress, Grid2, Typography } from "@mui/material"
+import { Alert, Badge, Box, Button, CircularProgress, Grid2, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 
 import { useFetchProductQuery } from "../redux/api/productApis"
@@ -34,7 +34,7 @@ const ProductPage = () => {
                 color="error"
                 variant="standard">     
                 Failed fetching product data</Alert>}
-            {(!isLoading && !isError && data) && <Card sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            {(!isLoading && !isError && data) && 
                 <Grid2 container spacing={3}
                     columnSpacing={1}
                     columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
@@ -86,7 +86,7 @@ const ProductPage = () => {
                         </Box>
                     </Box>
                 </Grid2>
-            </Card>}
+           }
         </Box>
 
     )

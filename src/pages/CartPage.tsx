@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Button, Card, Grid2, IconButton, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, /* Card */ Grid2, IconButton, TextField, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
@@ -77,11 +77,11 @@ const CartPage = () => {
     }
 
     return (
-        <Box sx={{ justifyItems: 'center', minWidth: '100%' }}>
-            <Card sx={{ display: 'flex',
+        <Box sx={{ justifyItems: 'center', maxWidth: 800 }}>
+          {/*   <Card sx={{ display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                minWidth: '90%'}}>
+                width:'100%'}}> */}
                 <Typography variant='h5' sx={{ padding: 2 }}> SHOPPING CART</Typography>
                 <br/>
                 {errorMessage && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
@@ -97,7 +97,7 @@ const CartPage = () => {
                         justifyContent: 'space-evenly',
                         textAlign: 'center'
                     }}>
-                    <Box key='head-row' 
+{/*                     <Box key='head-row' 
                         sx={{ display: 'flex',
                             flexDirection: 'row',
                             width: '100%',
@@ -124,7 +124,7 @@ const CartPage = () => {
                                 <b>Quantity</b>
                             </Typography>
                         </Grid2>
-                    </Box>
+                    </Box> */}
                     {(data?.cart && data.cart.length > 0) && data.cart.map(item => (
                         <Box key={item.id}
                             sx={{ display: 'flex',
@@ -132,12 +132,15 @@ const CartPage = () => {
                                 width: '100%',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                gap: 1.5 }}>
-                            <Grid2 size={2}>
-                                <img src={item.images[0]} style={{ width: '50%', height: 100 }}/>
+                                gap: 1 }}>
+                            <Grid2 size={3}>
+                                <img src={item.images[0]} style={{ width: 100, height: 100 }}/>
                             </Grid2>
-                            <Grid2 size={6}>
-                                <Typography>
+                            <Grid2 size={5}>
+                                <Typography
+                                    sx={{
+                                        minWidth: 140
+                                    }}>
                                     {item.title}
                                 </Typography>
                             </Grid2>
@@ -164,8 +167,8 @@ const CartPage = () => {
                                     sx={{
                                         width: `${String(item.quantity).length + 1}ch`,
                                         minWidth: `${String(item.quantity).length + 1}ch`,
-                                        height: 'auto',
                                         textAlign: 'center',
+                                        mb: 0.2,
                                         '& input': {
                                             textAlign: 'center',
                                             padding: 0,
@@ -179,7 +182,7 @@ const CartPage = () => {
                     ))}
                 </Grid2>}
                 <br/>
-            </Card>
+          {/*   </Card> */}
             <br/>
             <Box sx={{ display: 'flex',
                 flexDirection: 'column',
