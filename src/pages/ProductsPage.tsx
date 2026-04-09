@@ -8,7 +8,7 @@ const ProductsPage = () => {
     const { data, isLoading, isError } = useFetchAllProductsQuery()
 
     return (
-        <Box sx={{ justifyItems: 'center' }}>
+        <Box sx={{ justifyItems: 'center', padding: 1 }}>
             {isLoading && <CircularProgress/>}
             {isError && <Alert sx={{ alignItems: 'center' }}
                 color="error"

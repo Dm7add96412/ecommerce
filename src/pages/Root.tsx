@@ -49,7 +49,7 @@ const Root = () => {
 
     return (
         <Box sx={{ flexGrow: 1}} justifyItems='center'>
-            <AppBar position='static'>
+            <AppBar position='sticky'>
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
@@ -72,7 +72,6 @@ const Root = () => {
                                 E-COMMERCE
                             </Typography>
                         </Box>
-
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                             <IconButton size='large'
                                 color='inherit'
@@ -98,10 +97,12 @@ const Root = () => {
                                         </Typography>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
+                                        <Badge badgeContent={cartQuantity()} color='error' >
                                         <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
                                             component={NavLink} to={authToken ? '/shoppingcart' : '/login'}>
                                             Cart
                                         </Typography>
+                                        </Badge>
                                     </MenuItem>
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         {authToken ? 
@@ -117,7 +118,6 @@ const Root = () => {
                                     </MenuItem>
                             </Menu>
                         </Box>
-
                     </Box>
                     <Box sx={{ flex: 1, display: { xs: 'none', md: 'flex'}, justifyContent: 'center', gap: 4, textAlign: 'center' }}>
                         <Button color='inherit'
@@ -175,7 +175,7 @@ const Root = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
-            <Box sx={{ padding: 1, width: '75%', justifyItems: 'center' }}>
+            <Box sx={{ padding: 1, width: '90%', justifyItems: 'center' }}>
                 <Outlet />
             </Box>   
         </Box>

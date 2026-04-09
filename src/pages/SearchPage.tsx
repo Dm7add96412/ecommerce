@@ -20,7 +20,6 @@ const SearchPage = () => {
     return (
         <Box sx={{ display: 'flex',
                 flexDirection: 'column',
-                width: '100%',
                 justifyContent: 'center' }}>
             <Box sx={{ display: 'flex',
                     width: '100%',
@@ -43,9 +42,9 @@ const SearchPage = () => {
                     Results for the search word: <u><b>{searchWord}</b></u>
                     </Alert>}
             </Box>
-            <Box sx={{ justifyItems: 'center', width: '100%' }}>
+        {/*     <Box sx={{ justifyItems: 'center', padding: 1 }}> */}
                 {(!isLoading && (!isError && products.length > 0)) && <RenderProducts productsList={products}/>}
-            </Box>
+           {/*  </Box> */}
         </Box>
     )
 }

@@ -32,8 +32,9 @@ const useAddToCart = () => {
     const addToCart = useCallback(
         async (product: Product) => {
             const id = product.id.toString()
+            const title = product.title
                 if (data && data.cart) {
-                    const foundItem = data.cart.find(item => item.id === id)
+                    const foundItem = data.cart.find(item => item.id === id && item.title === title)
                     if (foundItem) {
                     const updatedItem: CartItem = { ...foundItem, quantity: foundItem.quantity + 1 }
                     await updateUser({ id: userId, token, cartItem: updatedItem })

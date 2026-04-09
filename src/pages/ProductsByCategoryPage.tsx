@@ -29,7 +29,7 @@ const ProductsByCategoryPage = () => {
     }, [categorieData, categoryId])
 
     return (
-        <Box sx={{ justifyItems: 'center', width: '100%' }}>
+        <Box sx={{ justifyItems: 'center' }}>
             <Box sx={{ justifyItems: 'center', width: '100%', padding: 1 }}>
             {isLoading && <CircularProgress/>}
             {isError && <Alert sx={{ alignItems: 'center' }}
@@ -47,7 +47,7 @@ const ProductsByCategoryPage = () => {
                 Products in category: <u><b>{products[0].category?.name}</b></u>
                 </Alert>}
             </Box>
-            <Box sx={{ justifyItems: 'center', width: '100%' }}>
+            <Box sx={{ justifyItems: 'center', padding: 1 }}>
                 {(!isLoading && (!isError && products.length > 0)) && <RenderProducts productsList={products}/>}
             </Box>
         </Box>

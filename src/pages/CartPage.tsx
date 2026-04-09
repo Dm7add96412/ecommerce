@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Box, Button, /* Card */ Grid2, IconButton, TextField, Typography } from '@mui/material';
+import { Alert, AppBar, Box, Button, /* Card */ Grid2, IconButton, TextField, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
@@ -77,7 +77,7 @@ const CartPage = () => {
     }
 
     return (
-        <Box sx={{ justifyItems: 'center', maxWidth: 800 }}>
+        <Box sx={{ justifyItems: 'center', maxWidth: 800, mb: 10 }}>
           {/*   <Card sx={{ display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -88,7 +88,7 @@ const CartPage = () => {
                     color="error"
                     variant="standard">     
                     {errorMessage}</Alert>}
-                {!isError && <Grid2 container spacing={2}
+                {!isError && <Grid2 container spacing={1}
                     columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
                     sx={{ width: '100%',
                         gap: 1,
@@ -129,18 +129,18 @@ const CartPage = () => {
                         <Box key={item.id}
                             sx={{ display: 'flex',
                                 flexDirection: 'row',
-                                width: '100%',
+                                width: { xs: 380, md: 700 },
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                gap: 1 }}>
+                               }}>
                             <Grid2 size={3}>
                                 <img src={item.images[0]} style={{ width: 100, height: 100 }}/>
                             </Grid2>
                             <Grid2 size={5}>
                                 <Typography
-                                    sx={{
-                                        minWidth: 140
-                                    }}>
+                                    sx={{whiteSpace: 'collapse', 
+                                        overflow: 'hidden',
+                                        margin: 2}}>
                                     {item.title}
                                 </Typography>
                             </Grid2>
@@ -184,13 +184,15 @@ const CartPage = () => {
                 <br/>
           {/*   </Card> */}
             <br/>
-            <Box sx={{ display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-             }}>
-                {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
-                <Button variant='contained'>Proceed to checkout</Button>
-            </Box>
+            <AppBar color='inherit' position='fixed' sx={{ top: 'auto', bottom: 1, padding: 2 }}>
+                <Box sx={{ display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}>
+                    {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
+                    <Button variant='contained'>Proceed to checkout</Button>
+                </Box>
+            </AppBar>
         </Box>
     )
 }

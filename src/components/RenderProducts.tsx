@@ -81,114 +81,117 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     }
 
     return (
-        <Grid2 container spacing={3}
-            columnSpacing={1}
-            columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
-            sx={{ width: '100%',
-                margin: '0 auto',
-                gap: 1,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center'}}>
-                <Grid2 size={12}
+        <Box justifyItems='center'>
+            <Box
+                sx={{ display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    gap: 2,
+                    maxWidth: '90%'}}>
+                <Button onClick={clearSorting}>Clear sorting</Button>
+                    <FormControl sx={{ width: 130 }}>
+                        <InputLabel>Sort by title</InputLabel>
+                        <Select value={sortAlpha}
+                            label='Sort by title'
+                            onChange={sortAlphabetically}>
+                            <MenuItem value='ASC'>ASC</MenuItem>
+                            <MenuItem value='DESC'>DESC</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl sx={{ width: 130 }}>
+                        <InputLabel>Sort by price</InputLabel>
+                        <Select value={sortPrice}
+                            label='Sort by price'
+                            onChange={sortByPrice}>
+                            <MenuItem value='Low to high'>Low to high</MenuItem>
+                            <MenuItem value='High to low'>High to low</MenuItem>
+                        </Select>
+                    </FormControl>
+            </Box>
+            {sorting && <Box
                     sx={{ display: 'flex',
                         flexDirection: 'row',
-                        justifyContent: 'center',
-                        gap: 2}}>
-                    <Button onClick={clearSorting}>Clear sorting</Button>
-                        <FormControl sx={{ width: 130 }}>
-                            <InputLabel>Sort by title</InputLabel>
-                            <Select value={sortAlpha}
-                                label='Sort by title'
-                                onChange={sortAlphabetically}>
-                                <MenuItem value='ASC'>ASC</MenuItem>
-                                <MenuItem value='DESC'>DESC</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <FormControl sx={{ width: 130 }}>
-                            <InputLabel>Sort by price</InputLabel>
-                            <Select value={sortPrice}
-                                label='Sort by price'
-                                onChange={sortByPrice}>
-                                <MenuItem value='Low to high'>Low to high</MenuItem>
-                                <MenuItem value='High to low'>High to low</MenuItem>
-                            </Select>
-                        </FormControl>
-                </Grid2>
-                {sorting && <Grid2 size={12}
-                        sx={{ display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center'}}>
-                        <Alert sx={{ alignItems: 'center' }}
-                            color='info'>
-                                Products sorted {sorted}
-                        </Alert>
-                    </Grid2>}
-                <HandlePagination
-                    allProducts={productsList}
-                    limit={limit}
-                    setPage={setPage}
-                    page={page}/>
-            {productsPaginated.map(product => (
-                <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
-                    key={product.id} 
-                    sx={{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%', padding: 0.5 }}>
-                    <Link component={RouterLink}
-                        to={`/singleproduct/${product.id}`}
-                        style={{ textDecoration: 'none', display: 'container', width: '100%', height: '100%' }}
-                        sx={{ transition: 'transform 0.2s ease-in-out',
-                            '&:hover': {
-                                transform: 'scale(1.04)'
-                            }
-                         }}>
-                        <Card sx={{ width: '100%',
-                            height: '100%',
-                            display: 'flex', 
-                            flexDirection: 'column', 
-                            alignItems: 'center',
-                            alignSelf: 'center',
-                            padding: 0.5,
-                            gap: 1}}>
-                            <img src={product.images[0]} alt='' style={{ width: '100%', height: 300, objectFit: 'cover' }} />
-                            <Typography 
-                                sx={{whiteSpace: 'nowrap', 
-                                    overflow: 'hidden', 
-                                    textOverflow: 'ellipsis',
-                                    width: '100%',
-                                    textAlign: 'center'}}>
-                                {product.title}
-                            </Typography>
-                            <Box sx={{ display: 'flex',
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-around',
-                                    width: '75%' }}>
-                                <Box sx={{ display: 'flex', gap: 1 }}>
-                                    <Typography >
-                                        Price:
-                                    </Typography>
-                                    <Typography >
-                                        <b>{product.price} €</b>
-                                    </Typography>
-                                </Box>
-                                {token && <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
-                                    <AddShoppingCartIcon color="info"
-                                    onClick={(e) => {e.preventDefault(); addToCart(product)}}
-                                    sx={{ transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
-                                        '&:hover': {
-                                            transform: 'scale(1.2)',
-                                            color: 'primary.main' }
-                                    }}/></Badge>}
-                            </Box>
-                        </Card>
-                    </Link>
-                </Grid2>
-            ))}
+                        justifyContent: 'center'}}>
+                    <Alert sx={{ alignItems: 'center', mt: 2 }}
+                        color='info'>
+                            Products sorted {sorted}
+                    </Alert>
+                </Box>}
             <HandlePagination
                 allProducts={productsList}
                 limit={limit}
                 setPage={setPage}
                 page={page}/>
-        </Grid2>
+            <Grid2 container
+                spacing={1}
+                columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
+                sx={{
+                    gap: 1,
+                    justifyContent: 'center'
+                    }}>
+                {productsPaginated.map(product => (
+                    <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
+                        key={product.id} 
+                        sx={{ display: 'flex', justifyContent: 'center',  /* width: '100%', height: '100%', */ padding: 0.5 }}>
+                        <Link component={RouterLink}
+                            to={`/singleproduct/${product.id}`}
+                            style={{ textDecoration: 'none', display: 'block', width: '100%' }}
+                            sx={{ transition: 'transform 0.2s ease-in-out',
+                                justifyItems: 'center',
+                                '&:hover': {
+                                    transform: 'scale(1.04)'
+                                }
+                            }}>
+                            <Card sx={{ width: { xs: 380, md: 700 },
+                                maxWidth: '100%',
+                                minHeight: { xs: 370, md: '100%' },
+                                display: 'flex', 
+                                flexDirection: 'column', 
+                                alignItems: 'center',
+                                padding: 0.5,
+                                gap: 1}}>
+                                <img src={product.images[0]} alt='' style={{ width: '100%', height: 300, objectFit: 'cover' }} />
+                                <Typography 
+                                    sx={{whiteSpace: 'nowrap', 
+                                        overflow: 'hidden', 
+                                        textOverflow: 'ellipsis',
+                                        width: '100%',
+                                        textAlign: 'center'}}>
+                                    {product.title}
+                                </Typography>
+                                <Box sx={{ display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'center',
+                                        width: '75%',
+                                        gap: 2 }}>
+                                    <Box sx={{ display: 'flex', gap: 1 }}>
+                                        <Typography >
+                                            Price:
+                                        </Typography>
+                                        <Typography >
+                                            <b>{product.price} €</b>
+                                        </Typography>
+                                    </Box>
+                                    {token && <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
+                                        <AddShoppingCartIcon color="info"
+                                        onClick={(e) => {e.preventDefault(); addToCart(product)}}
+                                        sx={{ transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
+                                            '&:hover': {
+                                                transform: 'scale(1.2)',
+                                                color: 'primary.main' }
+                                        }}/></Badge>}
+                                </Box>
+                            </Card>
+                        </Link>
+                    </Grid2>
+                ))}
+            </Grid2>
+            <HandlePagination
+                allProducts={productsList}
+                limit={limit}
+                setPage={setPage}
+                page={page}/>
+        </Box>
     )
 }
 
