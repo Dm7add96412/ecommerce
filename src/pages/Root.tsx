@@ -1,6 +1,6 @@
-import { AppBar, Badge, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import { AppBar, Badge, Box, Button, Drawer, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home'
-import { Link, Outlet, NavLink, useLocation } from 'react-router-dom'
+import { Outlet, NavLink, useLocation } from 'react-router-dom'
 import MenuIcon from '@mui/icons-material/Menu'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react'
 import Search from '../components/Search'
 import useAppSelector from '../hooks/useAppSelector'
 import { useFetchUserQuery } from '../redux/api/userApi'
+import ProfilePage from '../components/ProfileContent'
 
 const Root = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -17,6 +18,11 @@ const Root = () => {
     const [userId, setUserId] = useState<string>('')
     const { token: authToken, userId: authUserId } = useAppSelector(state => state.authReducer)
     const location = useLocation()
+    const [open, setOpen] = useState(false)
+
+    const toggleDrawer = (newOpen: boolean) => () => {
+        setOpen(newOpen)
+    }
 
     const { data, isError, isFetching } = useFetchUserQuery(
         { id: userId, token: token },
@@ -53,7 +59,7 @@ const Root = () => {
                 <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
                         <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-                            <IconButton  color='inherit' component={Link} to='/' >
+                            <IconButton  color='inherit' component={NavLink} to='/' >
                                 <HomeIcon/>
                             </IconButton>
                             <Typography variant='h6'
@@ -104,18 +110,6 @@ const Root = () => {
                                         </Typography>
                                         </Badge>
                                     </MenuItem>
-                                    <MenuItem onClick={handleCloseNavMenu}>
-                                        {authToken ? 
-                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={NavLink} to='/profilepage'>
-                                            Profile
-                                            </Typography> :
-                                            <Typography sx={{ textAlign: 'center', textDecoration: 'none', color: 'inherit' }}
-                                            component={NavLink} to='/login'>
-                                            Login
-                                            </Typography>}
-
-                                    </MenuItem>
                             </Menu>
                         </Box>
                     </Box>
@@ -158,13 +152,18 @@ const Root = () => {
                     <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
                         <Search/>
                         {authToken ?
-                            <IconButton color='inherit'
-                                component={NavLink} to='/profilepage'
-                                sx={{ boxShadow: location.pathname === '/profilepage' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
-                                    opacity: location.pathname === '/profilepage' ? 1 : 0.8
-                                 }}>
-                                <AccountCircleIcon/>
-                            </IconButton> :
+                            <Box>
+                                <IconButton color='inherit'
+                                onClick={toggleDrawer(true)}
+                                    sx={{ boxShadow: location.pathname === '/profilepage' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
+                                        opacity: location.pathname === '/profilepage' ? 1 : 0.8
+                                    }}>
+                                    <AccountCircleIcon/>
+                                </IconButton>
+                                    <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>
+                                        <ProfilePage/>
+                                    </Drawer>
+                            </Box> :
                             <IconButton color='inherit'
                                 component={NavLink} to='/login'
                                 sx={{ boxShadow: location.pathname === '/login' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',

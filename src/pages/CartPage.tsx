@@ -62,6 +62,12 @@ const CartPage = () => {
             setItemId('')
             return
         }
+        if (itemQuantity === '0' || numbered === 0) {
+            const updatedItem: CartItem = { ...cartItem, quantity: 0 }
+            await updateUser({ id: userId, token, cartItem: updatedItem })
+            setItemQuantity('')
+            setItemId('')
+        }
         if (numbered) {
             const updatedItem: CartItem = { ...cartItem, quantity: numbered }
             await updateUser({ id: userId, token, cartItem: updatedItem })
@@ -78,12 +84,7 @@ const CartPage = () => {
 
     return (
         <Box sx={{ justifyItems: 'center', maxWidth: 800, mb: 10 }}>
-          {/*   <Card sx={{ display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                width:'100%'}}> */}
                 <Typography variant='h5' sx={{ padding: 2 }}> SHOPPING CART</Typography>
-                <br/>
                 {errorMessage && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                     color="error"
                     variant="standard">     
@@ -97,34 +98,6 @@ const CartPage = () => {
                         justifyContent: 'space-evenly',
                         textAlign: 'center'
                     }}>
-{/*                     <Box key='head-row' 
-                        sx={{ display: 'flex',
-                            flexDirection: 'row',
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 1.5 }}>
-                        <Grid2 size={2}>
-                            <Typography >
-                                <b>Image</b>
-                            </Typography>
-                        </Grid2>
-                        <Grid2 size={6}>
-                        <Typography >
-                                <b>Title</b>
-                            </Typography>
-                        </Grid2>
-                        <Grid2 size={2}>
-                        <Typography >
-                                <b>Price</b>
-                            </Typography>
-                        </Grid2>
-                        <Grid2 size={2}>
-                        <Typography >
-                                <b>Quantity</b>
-                            </Typography>
-                        </Grid2>
-                    </Box> */}
                     {(data?.cart && data.cart.length > 0) && data.cart.map(item => (
                         <Box key={item.id}
                             sx={{ display: 'flex',
@@ -182,7 +155,6 @@ const CartPage = () => {
                     ))}
                 </Grid2>}
                 <br/>
-          {/*   </Card> */}
             <br/>
             <AppBar color='inherit' position='fixed' sx={{ top: 'auto', bottom: 1, padding: 2 }}>
                 <Box sx={{ display: 'flex',
@@ -190,7 +162,7 @@ const CartPage = () => {
                     alignItems: 'center'
                 }}>
                     {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
-                    <Button variant='contained'>Proceed to checkout</Button>
+                    <Button variant='contained'>Checkout</Button>
                 </Box>
             </AppBar>
         </Box>

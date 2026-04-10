@@ -35,16 +35,14 @@ const ProductPage = () => {
                 variant="standard">     
                 Failed fetching product data</Alert>}
             {(!isLoading && !isError && data) && 
-                <Grid2 container spacing={3}
+                <Grid2 container
                     columnSpacing={1}
                     columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
                     sx={{ width: '100%',
                         margin: '0 auto',
                         gap: 1,
-                        display: 'flex',
                         justifyContent: 'center'}}>
-                    <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
-                        {data.images.slice(0,4).map((image, index) => (
+                        {data.images.slice(0,3).map((image, index) => (
                             <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
                                 key={`${data.id}+${index}`} 
                                 sx={{ justifyContent: 'center',
@@ -53,11 +51,10 @@ const ProductPage = () => {
                                 <img src={image} alt='' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </Grid2>
                         ))}
-                    </Box>
                     <br/>
                     <Box sx={{
                         textAlign: 'center',
-                        width: '80%',
+                        width: '90%',
                         padding: 0.5 }}>
                         <Typography variant="h5">
                             {data.title} 
@@ -79,7 +76,14 @@ const ProductPage = () => {
                             <Typography>
                                 {token && <Badge badgeContent={ifInCartQuantity(data.id)} color='error'>
                                     <Button variant='contained' size='medium' onClick={() => addToCart(data)}>
-                                    <AddShoppingCartIcon/>  Add to cart
+                                    <AddShoppingCartIcon/>  
+                                    <Typography
+                                        fontSize={15}
+                                        sx={{ whiteSpace: 'nowrap', 
+                                        overflow: 'hidden', 
+                                        textOverflow: 'ellipsis' }}>
+                                        Add to cart
+                                    </Typography>
                                 </Button>
                                 </Badge>}
                             </Typography>

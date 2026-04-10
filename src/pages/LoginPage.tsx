@@ -1,7 +1,8 @@
-import { Alert, Box, Button, Typography } from "@mui/material"
+import { Alert, Box, Button, Link, Typography } from "@mui/material"
 import TextField from '@mui/material/TextField'
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Link as RouterLink } from "react-router-dom"
 
 import { useLoginMutation } from "../redux/api/authApi"
 import { useFetchUserQuery } from "../redux/api/userApi"
@@ -44,7 +45,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (token && userDetails && isSuccess) {
-            navigate('/profilepage')
+            navigate('/products')
         }
     }, [isSuccess, userDetails, token, navigate])
 
@@ -78,6 +79,12 @@ const LoginPage = () => {
                     onChange={event => setPassword(event.target.value)}/>
                 <Button variant='contained' type='submit'>Login</Button>
                 <Typography variant='body2'>Please log in to start shopping</Typography>
+                <Link variant="h6" 
+                    underline="none"
+                    component={RouterLink}
+                    to={'/'}>
+                    SIGN UP
+                </Link>
                 {loginError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                     color="error"
                     variant="standard">     

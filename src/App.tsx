@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import ProductsPage from './pages/ProductsPage';
 import CartPage from './pages/CartPage';
-import ProfilePage from './pages/ProfilePage';
 import Root from './pages/Root';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
@@ -29,10 +28,10 @@ function App() {
           path: '/shoppingcart',
           element: <CartPage/>
         },
-        {
-          path: '/profilepage',
-          element: <ProfilePage/>
-        },
+/*         {
+          path: '/signuppage',
+          element: <SignupPage/>
+        }, */
         {
           path: '/search/:searchWord',
           element: <SearchPage/>

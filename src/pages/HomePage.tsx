@@ -3,6 +3,7 @@ import EuroIcon from '@mui/icons-material/Euro';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import banner from "../assets/HomePageBanner.webp"
 
 const HomePage = () => {
     return (
@@ -27,6 +28,7 @@ const HomePage = () => {
                 <CreditCardIcon color='info'/>
                 <ShoppingBasketIcon color='warning'/>
             </Box>
+            <img src={banner} alt="Homepage banner" style={{ width: 380, height: 380 }}/>
         </Box>
     )
 }

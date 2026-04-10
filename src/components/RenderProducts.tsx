@@ -132,7 +132,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                 {productsPaginated.map(product => (
                     <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
                         key={product.id} 
-                        sx={{ display: 'flex', justifyContent: 'center',  /* width: '100%', height: '100%', */ padding: 0.5 }}>
+                        sx={{ display: 'flex', justifyContent: 'center', padding: 0.5 }}>
                         <Link component={RouterLink}
                             to={`/singleproduct/${product.id}`}
                             style={{ textDecoration: 'none', display: 'block', width: '100%' }}
@@ -142,7 +142,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                     transform: 'scale(1.04)'
                                 }
                             }}>
-                            <Card sx={{ width: { xs: 380, md: 700 },
+                            <Card sx={{ width: { xs: 370, md: 700 },
                                 maxWidth: '100%',
                                 minHeight: { xs: 370, md: '100%' },
                                 display: 'flex', 

@@ -8,7 +8,7 @@ import { logoutAuth } from "../redux/reducers/authReducer"
 import { isApiError } from "../utils/apiError"
 import useAuthenticate from "../hooks/useAuthenticate"
 
-const ProfilePage = () => {
+const ProfileContent = () => {
     const navigate = useNavigate()
     const [fetchError, setFetchError] = useState<string>('')
     const dispatch = useAppDispatch()
@@ -41,15 +41,16 @@ const ProfilePage = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex',
+        <Box sx={{ 
+            width: { xs: 200, md: 300 },
+            display: 'flex',
             flexDirection: 'column',
-            justifyItems: 'center',
             padding: 1,
             alignItems: 'center',
-            gap: 1.5 }}>
-            <Typography variant="h5">PROFILE PAGE</Typography>
-            <Typography>This is the profile page of <u>{data?.username}</u></Typography>
-            <Typography>Your shopping cart currently has <b>{data?.cart?.length}</b> items</Typography>
+            textAlign: 'center',
+            gap: 2 }}>
+            <Typography><b>Logged in as <u>{data?.username}</u></b></Typography>
+            <Typography>Your shopping cart has <b>{data?.cart?.length}</b> items</Typography>
             <Typography>Happy shopping!</Typography>
             <Button variant='contained' onClick={logOut}>Logout</Button>
             {fetchError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
@@ -60,4 +61,4 @@ const ProfilePage = () => {
     )
 }
 
-export default ProfilePage
+export default ProfileContent
