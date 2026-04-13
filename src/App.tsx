@@ -8,6 +8,7 @@ import ProductPage from './pages/ProductPage';
 import CategoriesPage from './pages/CategoriesPage';
 import ProductsByCategoryPage from './pages/ProductsByCategoryPage';
 import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 
 function App() {
 
@@ -28,10 +29,10 @@ function App() {
           path: '/shoppingcart',
           element: <CartPage/>
         },
-/*         {
+        {
           path: '/signuppage',
-          element: <SignupPage/>
-        }, */
+          element: <SignUpPage/>
+        },
         {
           path: '/search/:searchWord',
           element: <SearchPage/>

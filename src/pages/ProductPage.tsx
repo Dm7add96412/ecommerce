@@ -30,7 +30,7 @@ const ProductPage = () => {
     return (
         <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
             {isLoading && <CircularProgress/>}
-            {(isError || productId === '') && <Alert sx={{ alignItems: 'center' }}
+            {(isError || productId === '') && <Alert sx={{ alignItems: 'center', mt: 2 }}
                 color="error"
                 variant="standard">     
                 Failed fetching product data</Alert>}
@@ -46,7 +46,7 @@ const ProductPage = () => {
                             <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
                                 key={`${data.id}+${index}`} 
                                 sx={{ justifyContent: 'center',
-                                    width: '100%',
+                                    width: 370, minWidth: 370,
                                     padding: 1 }}>
                                 <img src={image} alt='' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                             </Grid2>

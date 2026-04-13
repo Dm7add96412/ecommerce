@@ -55,7 +55,8 @@ const LoginPage = () => {
             justifyContent: 'center',
             padding: 2,
             gap: 1,
-            textAlign: 'center' }}>
+            textAlign: 'center',
+            width: 250  }}>
             <Typography variant='h5'>LOGIN</Typography>
             <br/>
             <Box sx={{ display: 'flex',
@@ -82,7 +83,7 @@ const LoginPage = () => {
                 <Link variant="h6" 
                     underline="none"
                     component={RouterLink}
-                    to={'/'}>
+                    to={'/signuppage'}>
                     SIGN UP
                 </Link>
                 {loginError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}

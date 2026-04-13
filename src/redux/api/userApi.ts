@@ -26,9 +26,17 @@ const userApi = createApi({
                 body: cartItem
             }),
             invalidatesTags: ['User']
+        }),
+        createUse: builder.mutation<User, User>({
+            query: (user) => ({ 
+                url: '/',
+                method: 'POST',
+                body: user
+            }),
+            invalidatesTags: ['User']
         })
     })
 })
 
-export const { useFetchUserQuery, useUpdateUserMutation } = userApi
+export const { useFetchUserQuery, useUpdateUserMutation, useCreateUseMutation } = userApi
 export default userApi

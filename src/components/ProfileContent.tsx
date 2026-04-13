@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Typography } from "@mui/material"
+import { Alert, Box, Button, Link, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -40,6 +40,10 @@ const ProfileContent = () => {
         navigate('/login')
     }
 
+    const deleteAccount = () => {
+        window.confirm('Are you sure you want to delete your account?')
+    }
+
     return (
         <Box sx={{ 
             width: { xs: 200, md: 300 },
@@ -53,6 +57,13 @@ const ProfileContent = () => {
             <Typography>Your shopping cart has <b>{data?.cart?.length}</b> items</Typography>
             <Typography>Happy shopping!</Typography>
             <Button variant='contained' onClick={logOut}>Logout</Button>
+            <Link variant="subtitle1" 
+                color="error" 
+                underline="none" 
+                onClick={deleteAccount} 
+                sx={{ cursor: 'pointer' }}>
+                    Delete account
+            </Link>
             {fetchError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                 color="error"
                 variant="standard">     
