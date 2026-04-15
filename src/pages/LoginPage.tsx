@@ -32,15 +32,13 @@ const LoginPage = () => {
             dispatch(loginAuth({ token: resultUser.token, userId: resultUser.id }))
             setToken(resultUser.token)
             setUserId(resultUser.id)
-        } catch (err: unknown) {
+        } catch (err) {
             if (isApiError(err)) {
                 setLoginError(err.data.error)
             } else {
                 setLoginError('Login failed')
             }
         }
-        setUserName('')
-        setPassword('')
     }
 
     useEffect(() => {

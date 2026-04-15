@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 import { CartItem } from "../types/CartItem"
@@ -12,6 +12,7 @@ import useAuthenticate from "./useAuthenticate"
 const useAddToCart = () => {
     const navigate = useNavigate()
     const { token, userId, logOut } = useAuthenticate()
+    const [ fetchError, setFetchError ] = useState<string>('')
     const { data, isError, error, isFetching } = useFetchUserQuery({ id: userId, token: token })
     const [updateUser] = useUpdateUserMutation()
     const dispatch = useAppDispatch()
@@ -19,13 +20,18 @@ const useAddToCart = () => {
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
             if (isApiError(error)) {
-                window.alert(error.data.error)
+                console.log("test")
+                setFetchError(error.data.error)
+              /*   alert(error.data.error) */
             } else {
-                window.alert('Error fetching user data / timeout')
+                setFetchError('Error fetching user data / timeout')
+              /*   alert('Error fetching user data / timeout') */
             }
-            dispatch(logoutAuth())
-            logOut()
-            navigate('/login')
+            setTimeout(() => {
+                dispatch(logoutAuth())
+                logOut()
+                navigate('/login')
+            }, 3000)
         }
     }, [isError, data, isFetching, navigate, dispatch, error, logOut])
 
@@ -46,7 +52,7 @@ const useAddToCart = () => {
         },
         [data, updateUser, userId, token]
     )
-    return addToCart
+    return { addToCart, fetchError }
 }
 
 export default useAddToCart

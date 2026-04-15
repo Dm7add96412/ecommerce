@@ -17,7 +17,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [sortAlpha, setSortAlpha] = useState<string>('')
     const [sorting, setSorting] = useState<boolean>(false)
     const [sorted, setSorted] = useState<string>('')
-    const addToCart = useAddToCart()
+    const { addToCart, fetchError } = useAddToCart()
     const { token, userId } = useAuthenticate()
 
     const { data } = useFetchUserQuery(
@@ -116,6 +116,15 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                         color='info'>
                             Products sorted {sorted}
                     </Alert>
+                </Box>}
+            {fetchError !== '' && <Box
+                    sx={{ display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center'}}> 
+                        <Alert sx={{ alignItems: 'center', mt: 2 }}
+                    color="error"
+                    variant="standard">     
+                    {fetchError}</Alert>
                 </Box>}
             <HandlePagination
                 allProducts={productsList}

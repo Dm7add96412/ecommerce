@@ -32,7 +32,7 @@ const CartPage = () => {
                 dispatch(logoutAuth())
                 logOut()
                 navigate('/login')
-            }, 5000)
+            }, 3000)
         }
     }, [isError, data, isFetching, navigate, dispatch, error, logOut])
 

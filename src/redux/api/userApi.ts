@@ -27,16 +27,26 @@ const userApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
-        createUse: builder.mutation<User, User>({
+        createUser: builder.mutation<User, User>({
             query: (user) => ({ 
                 url: '/',
                 method: 'POST',
                 body: user
             }),
             invalidatesTags: ['User']
+        }),
+        deleteUser: builder.mutation<void, UserQuery>({
+            query: ({ token }) => ({
+                url: '/',
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }),
+            invalidatesTags: ['User']
         })
     })
 })
 
-export const { useFetchUserQuery, useUpdateUserMutation, useCreateUseMutation } = userApi
+export const { useFetchUserQuery, useUpdateUserMutation, useCreateUserMutation, useDeleteUserMutation } = userApi
 export default userApi

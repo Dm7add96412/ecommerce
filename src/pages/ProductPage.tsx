@@ -11,7 +11,7 @@ const ProductPage = () => {
     const params = useParams()
     const productId = params.productId
     const { data, isError, isLoading } = useFetchProductQuery(productId ?? '')
-    const addToCart = useAddToCart()
+    const { addToCart, fetchError } = useAddToCart()
     const { token, userId } = useAuthenticate()
 
     const { data: userData } = useFetchUserQuery(
@@ -34,6 +34,10 @@ const ProductPage = () => {
                 color="error"
                 variant="standard">     
                 Failed fetching product data</Alert>}
+            {fetchError !== '' && <Alert sx={{ alignItems: 'center', mt: 2 }}
+                color="error"
+                variant="standard">     
+                {fetchError}</Alert>}
             {(!isLoading && !isError && data) && 
                 <Grid2 container
                     columnSpacing={1}

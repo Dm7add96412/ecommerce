@@ -1,6 +1,6 @@
 import { Alert, Box, Button, CircularProgress, TextField, Typography } from "@mui/material"
 import { useState } from "react"
-import { useCreateUseMutation } from "../redux/api/userApi"
+import { useCreateUserMutation } from "../redux/api/userApi"
 import { isApiError } from "../utils/apiError"
 import { useNavigate } from "react-router-dom"
 
@@ -12,18 +12,16 @@ const SignUpPage = () => {
     const [error, setError] = useState<string | null>(null)
     const [passwordError, setPasswordError] = useState<boolean>(false)
     const [success, setSuccess] = useState<boolean>(false)
-    const [loading, setLoading] = useState<boolean>(false)
-    const [createUser] = useCreateUseMutation()
+    const [createUser] = useCreateUserMutation()
 
     const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setError('')
         setPasswordError(false)
-        setLoading(true)
+        
         if (password !== retypePassword) {
             setError('Passwords do not match')
             setPasswordError(true)
-            setLoading(false)
             return
         }
         try {
@@ -31,18 +29,16 @@ const SignUpPage = () => {
             if (result) {
                 setSuccess(true)
                 setTimeout(() => {
-                    setLoading(false)
                     navigate('/login')
-                }, 5000)
+                }, 3000)
             }
-        } catch (err: unknown) {
+        } catch (err) {
             if (isApiError(err)) {
                 setError(err.data.error)
             } else {
                 setError('Failed to create user')
             }
         }
-        setLoading(false)
     }
 
     return (
@@ -83,13 +79,13 @@ const SignUpPage = () => {
                     value={retypePassword}
                     error={passwordError ? true : false}
                     onChange={event => setRetypePassword(event.target.value)}/>
-                <Button variant='contained' type='submit' loading={loading}>Create account</Button>
+                <Button variant='contained' type='submit' disabled={success}>Create account</Button>
                 {(error) && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                     color="error"
                     variant="standard">     
                     {error}</Alert>}
                 {success && <Box sx={{ justifyItems: 'center', padding: 1 }}>
-                    <Alert sx={{ alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                    <Alert sx={{ alignItems: 'center', justifyContent: 'center', mb: 2, textAlign: 'center' }}
                         color="success"
                         variant="standard">
                         Account creation successful! Redirecting...</Alert>
