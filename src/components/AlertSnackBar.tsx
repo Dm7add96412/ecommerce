@@ -1,6 +1,6 @@
 import { useState } from "react"
 import AlertSnackBarProps from "../types/AlertSnackBarProps"
-import Snackbar, { SnackbarCloseReason } from "@mui/material/Snackbar"
+import Snackbar from "@mui/material/Snackbar"
 import { Alert } from "@mui/material"
 
 
@@ -8,12 +8,12 @@ const AlertSnackBar: React.FC<AlertSnackBarProps> = ({ severity, message }) => {
     const [open, setOpen] = useState<boolean>(true)
 
     const handleClose = (
-        event?: React.SyntheticEvent | Event,
-        reason?: SnackbarCloseReason,
+/*         event?: React.SyntheticEvent | Event,
+        reason?: SnackbarCloseReason, */
         ) => {
-        if (reason === 'clickaway') {
+/*         if (reason === 'clickaway') {
             return;
-        }
+        } */
 
         setOpen(false);
         }

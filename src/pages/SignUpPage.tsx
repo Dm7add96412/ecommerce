@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useCreateUserMutation } from "../redux/api/userApi"
 import { isApiError } from "../utils/apiError"
 import { useNavigate } from "react-router-dom"
+import AlertSnackBar from "../components/AlertSnackBar"
 
 const SignUpPage = () => {
     const navigate = useNavigate()
@@ -85,10 +86,9 @@ const SignUpPage = () => {
                     variant="standard">     
                     {error}</Alert>}
                 {success && <Box sx={{ justifyItems: 'center', padding: 1 }}>
-                    <Alert sx={{ alignItems: 'center', justifyContent: 'center', mb: 2, textAlign: 'center' }}
-                        color="success"
-                        variant="standard">
-                        Account created! Redirecting...</Alert>
+                    <AlertSnackBar 
+                        message="Account created! Redirecting..."
+                        severity="success"/>
                         <CircularProgress/>
                     </Box>}
             </Box>
