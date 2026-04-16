@@ -9,6 +9,7 @@ import HandlePagination from "./HandlePagination"
 import useAddToCart from "../hooks/useAddToCart"
 import { useFetchUserQuery } from "../redux/api/userApi"
 import useAuthenticate from "../hooks/useAuthenticate"
+import AlertSnackBar from "./AlertSnackBar"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [page, setPage] = useState<number>(1)
@@ -117,15 +118,10 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                             Products sorted {sorted}
                     </Alert>
                 </Box>}
-            {fetchError !== '' && <Box
-                    sx={{ display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center'}}> 
-                        <Alert sx={{ alignItems: 'center', mt: 2 }}
-                    color="error"
-                    variant="standard">     
-                    {fetchError}</Alert>
-                </Box>}
+                {fetchError !== '' && 
+                    <AlertSnackBar 
+                        message={fetchError}
+                        severity="error"/>}
             <HandlePagination
                 allProducts={productsList}
                 limit={limit}

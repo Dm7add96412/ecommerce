@@ -20,12 +20,9 @@ const useAddToCart = () => {
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
             if (isApiError(error)) {
-                console.log("test")
                 setFetchError(error.data.error)
-              /*   alert(error.data.error) */
             } else {
                 setFetchError('Error fetching user data / timeout')
-              /*   alert('Error fetching user data / timeout') */
             }
             setTimeout(() => {
                 dispatch(logoutAuth())

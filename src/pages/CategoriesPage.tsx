@@ -15,16 +15,19 @@ const CategoriesPage = () => {
                 justifyContent: 'center'}}>
             <Grid2 size={12}
                 sx={{ display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'center',
+                    alignItems: 'center',
                     padding: 2
                  }}>
                 {!isLoading &&<Typography variant='h5'>CATEGORIES</Typography>}
                 {isLoading && <CircularProgress/>}
-                {isError && <Alert sx={{ alignItems: 'center' }}
-                    color="error"
-                    variant="standard">     
-                    There's been an error </Alert>}
+                {isError && 
+                    <Alert sx={{ alignItems: 'center' }}
+                        color="error"
+                        variant="standard">
+                        Error fetching categories
+                    </Alert>}
                 {!isLoading && ((data === undefined) || data.length < 1) && <Alert sx={{ alignItems: 'center' }}
                     color="warning"
                     variant="standard">
@@ -61,7 +64,11 @@ const CategoriesPage = () => {
                                      }}/>          
                                 </Box>
                                 <CardContent>
-                                    <Typography variant='body2'>
+                                    <Typography 
+                                        variant='body2' 
+                                        sx={{ whiteSpace: 'nowrap', 
+                                            overflow: 'hidden', 
+                                            textOverflow: 'ellipsis' }}>
                                         {category.name.toUpperCase()}
                                     </Typography>
                                 </CardContent>

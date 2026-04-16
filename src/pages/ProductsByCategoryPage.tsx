@@ -32,11 +32,13 @@ const ProductsByCategoryPage = () => {
         <Box sx={{ justifyItems: 'center' }}>
             <Box sx={{ justifyItems: 'center', width: '100%', padding: 1 }}>
             {isLoading && <CircularProgress/>}
-            {isError && <Alert sx={{ alignItems: 'center' }}
+            {isError && 
+            <Alert sx={{ alignItems: 'center', mb: 2 }}
                 color="error"
-                variant="standard">     
-                Error fetching products</Alert>}
-            {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center' }}
+                variant="standard">
+                Error fetching products
+                </Alert>}
+            {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center', mb: 2 }}
                 color="warning"
                 variant="standard">
                 No products found in category: <u><b>{categoryName}</b></u>

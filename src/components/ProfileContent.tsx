@@ -1,4 +1,4 @@
-import { Alert, Box, Button, CircularProgress, Link, Typography } from "@mui/material"
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 
@@ -7,11 +7,14 @@ import useAppDispatch from "../hooks/useAppDispatch"
 import { logoutAuth } from "../redux/reducers/authReducer"
 import { isApiError } from "../utils/apiError"
 import useAuthenticate from "../hooks/useAuthenticate"
+import AlertSnackBar from "./AlertSnackBar"
 
 const ProfileContent = () => {
     const navigate = useNavigate()
     const [fetchError, setFetchError] = useState<string>('')
     const [deleteOk, setDeleteOk] = useState<boolean>(false)
+    const [open, setOpen] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const dispatch = useAppDispatch()
     const { token, userId, logOut: authLogOut } = useAuthenticate()
     const [deleteUser] = useDeleteUserMutation()
@@ -43,7 +46,8 @@ const ProfileContent = () => {
     }
 
     const deleteAccount = async () => {
-        if (confirm('Are you sure you want to delete your account?')) {
+        setLoading(true)
+        setOpen(false)
             try {
                 await deleteUser({ id: userId, token: token }).unwrap()
                 setDeleteOk(true)
@@ -59,7 +63,14 @@ const ProfileContent = () => {
                 setFetchError('Failed to delete user')
             }
         }
-        }
+    }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    }
+    
+    const handleClose = () => {
+        setOpen(false);
     }
 
     return (
@@ -76,25 +87,45 @@ const ProfileContent = () => {
             <Typography>Happy shopping!</Typography>
             <Button variant='contained' 
                 onClick={logOut}
-                disabled={deleteOk}>Logout</Button>
+                disabled={loading}>Logout</Button>
             <Link variant="subtitle1" 
                 color="error" 
                 underline="none" 
                 component="button"
-                disabled={deleteOk}
-                onClick={deleteAccount}
+                disabled={loading}
+                onClick={handleClickOpen}
                 sx={{ cursor: 'pointer' }}>
                     Delete account
             </Link>
-            {fetchError && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
-                color="error"
-                variant="standard">     
-                {fetchError}</Alert>}
-            {deleteOk && <Box sx={{ justifyItems: 'center', padding: 1 }}>
-                <Alert sx={{ alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                    color="info"
-                    variant="standard">
-                    Account deleted successfully. Redirecting...</Alert>
+            <Dialog open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                role="alertdialog">
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure you want to delete your account?"}
+                </DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Once you remove your account the action cannot be undone.
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={deleteAccount}>
+                        OK
+                    </Button>
+                    <Button onClick={handleClose}>Cancel</Button>
+                </DialogActions>
+            </Dialog>
+            {fetchError !== '' && 
+            <AlertSnackBar 
+                message={fetchError}
+                severity="error"/>}
+            {deleteOk && 
+            <AlertSnackBar 
+                message="Account deleted successfully. Redirecting..."
+                severity="success"/>}
+            {loading && <Box sx={{ justifyItems: 'center', padding: 1 }}>
                     <CircularProgress/>
                 </Box>}
         </Box>

@@ -80,7 +80,7 @@ const SignUpPage = () => {
                     error={passwordError ? true : false}
                     onChange={event => setRetypePassword(event.target.value)}/>
                 <Button variant='contained' type='submit' disabled={success}>Create account</Button>
-                {(error) && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
+                {error && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
                     color="error"
                     variant="standard">     
                     {error}</Alert>}
@@ -88,8 +88,8 @@ const SignUpPage = () => {
                     <Alert sx={{ alignItems: 'center', justifyContent: 'center', mb: 2, textAlign: 'center' }}
                         color="success"
                         variant="standard">
-                        Account creation successful! Redirecting...</Alert>
-                        <CircularProgress/>    
+                        Account created! Redirecting...</Alert>
+                        <CircularProgress/>
                     </Box>}
             </Box>
         </Box>

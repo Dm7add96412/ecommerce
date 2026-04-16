@@ -22,29 +22,28 @@ const SearchPage = () => {
                 flexDirection: 'column',
                 justifyContent: 'center' }}>
             <Box sx={{ display: 'flex',
+                    flexDirection: 'column',
                     width: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
                     padding: 1 }}>
                 {isLoading && <CircularProgress sx={{ justifySelf: 'center' }}/>}
-                {(isError && !isLoading) && <Alert sx={{ alignItems: 'center' }}
+                {(isError && !isLoading) && <Alert sx={{ alignItems: 'center', mb: 2 }}
                     color="error"
                     variant="standard">     
                     Failed to search products</Alert>}
-                {!isLoading && (products.length < 1) && <Alert sx={{ alignItems: 'center' }}
+                {!isLoading && !isError && (products.length < 1) && <Alert sx={{ alignItems: 'center', mb: 2 }}
                     color="warning"
                     variant="standard">
                     No products found for search word: <u><b>{searchWord}</b></u>
                     </Alert>}
-                {(!isLoading && (!isError && products.length > 0)) && <Alert sx={{ alignItems: 'center' }}
+                {(!isLoading && !isError && products.length > 0) && <Alert sx={{ alignItems: 'center' }}
                     color="success"
                     variant="standard">
                     Results for the search word: <u><b>{searchWord}</b></u>
                     </Alert>}
             </Box>
-        {/*     <Box sx={{ justifyItems: 'center', padding: 1 }}> */}
                 {(!isLoading && (!isError && products.length > 0)) && <RenderProducts productsList={products}/>}
-           {/*  </Box> */}
         </Box>
     )
 }

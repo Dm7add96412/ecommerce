@@ -10,7 +10,7 @@ const ProductsPage = () => {
     return (
         <Box sx={{ justifyItems: 'center', padding: 1 }}>
             {isLoading && <CircularProgress/>}
-            {isError && <Alert sx={{ alignItems: 'center' }}
+            {isError && <Alert sx={{ alignItems: 'center', mb: 2 }}
                 color="error"
                 variant="standard">     
                 Failed to fetch all products data</Alert>}

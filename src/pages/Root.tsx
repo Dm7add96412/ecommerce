@@ -158,10 +158,7 @@ const Root = () => {
                         {authToken ?
                             <Box>
                                 <IconButton color='inherit'
-                                    onClick={toggleDrawer(true)}
-                                    /* sx={{ boxShadow: location.pathname === '/profilepage' ? '0 2px 8px rgba(0,0,0,0.25)' : 'none',
-                                        opacity: location.pathname === '/profilepage' ? 1 : 0.8
-                                    }} */>
+                                    onClick={toggleDrawer(true)}>
                                     <AccountCircleIcon/>
                                 </IconButton>
                                     <Drawer open={open} onClose={toggleDrawer(false)} anchor='right'>

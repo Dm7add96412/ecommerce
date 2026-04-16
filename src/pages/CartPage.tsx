@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, AppBar, Box, Button, /* Card */ Grid2, IconButton, TextField, Typography } from '@mui/material';
+import { AppBar, Box, Button, Grid2, IconButton, TextField, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import useAppDispatch from '../hooks/useAppDispatch';
 import { logoutAuth } from '../redux/reducers/authReducer';
 import { isApiError } from '../utils/apiError';
 import useAuthenticate from '../hooks/useAuthenticate';
+import AlertSnackBar from '../components/AlertSnackBar';
 
 const CartPage = () => {
     const navigate = useNavigate()
@@ -85,10 +86,9 @@ const CartPage = () => {
     return (
         <Box sx={{ justifyItems: 'center', maxWidth: 800, mb: 10 }}>
                 <Typography variant='h5' sx={{ padding: 2 }}> SHOPPING CART</Typography>
-                {errorMessage && <Alert sx={{ alignItems: 'center', justifyContent: 'center' }}
-                    color="error"
-                    variant="standard">     
-                    {errorMessage}</Alert>}
+                {errorMessage && <AlertSnackBar 
+                        message={errorMessage}
+                        severity="error"/>}
                 {!isError && <Grid2 container spacing={1}
                     columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
                     sx={{ width: '100%',

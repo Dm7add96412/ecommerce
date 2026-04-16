@@ -6,6 +6,7 @@ import { useFetchProductQuery } from "../redux/api/productApis"
 import useAddToCart from "../hooks/useAddToCart"
 import { useFetchUserQuery } from "../redux/api/userApi"
 import useAuthenticate from "../hooks/useAuthenticate"
+import AlertSnackBar from "../components/AlertSnackBar"
 
 const ProductPage = () => {
     const params = useParams()
@@ -28,16 +29,18 @@ const ProductPage = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
             {isLoading && <CircularProgress/>}
-            {(isError || productId === '') && <Alert sx={{ alignItems: 'center', mt: 2 }}
-                color="error"
-                variant="standard">     
-                Failed fetching product data</Alert>}
-            {fetchError !== '' && <Alert sx={{ alignItems: 'center', mt: 2 }}
-                color="error"
-                variant="standard">     
-                {fetchError}</Alert>}
+            {(isError || productId === '') && 
+                <Alert sx={{ alignItems: 'center' }}
+                    color="warning"
+                    variant="standard">
+                    Failed fetching product data
+                </Alert>}
+            {fetchError !== '' && 
+            <AlertSnackBar 
+                message={fetchError}
+                severity="error"/>}
             {(!isLoading && !isError && data) && 
                 <Grid2 container
                     columnSpacing={1}
