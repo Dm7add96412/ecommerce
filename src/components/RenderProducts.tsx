@@ -18,14 +18,14 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [sortAlpha, setSortAlpha] = useState<string>('')
     const [sorting, setSorting] = useState<boolean>(false)
     const [sorted, setSorted] = useState<string>('')
-    const { addToCart, fetchError } = useAddToCart()
+    const { addToCart, fetchError, addedOk } = useAddToCart()
     const { token, userId } = useAuthenticate()
 
     const { data } = useFetchUserQuery(
         { id: userId, token: token }
     )
 
-    const limit = 16
+    const limit = 24
     const offset = (page - 1) * limit
 
     useEffect(() => {
@@ -89,6 +89,12 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                     justifyContent: 'center',
                     gap: 2,
                     maxWidth: '90%'}}>
+            {addedOk && 
+            <AlertSnackBar 
+                message="Item added to cart successfully"
+                severity="success"
+                hideduration={2000}
+                location="top"/>}
                 <Button onClick={clearSorting}>Clear sorting</Button>
                     <FormControl sx={{ width: 130 }}>
                         <InputLabel>Sort by title</InputLabel>

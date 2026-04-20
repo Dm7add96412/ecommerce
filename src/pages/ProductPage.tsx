@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { Alert, Badge, Box, Button, CircularProgress, Grid2, Typography } from "@mui/material"
+import { Alert, AppBar, Badge, Box, Button, CircularProgress, Grid2, Typography } from "@mui/material"
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart'
 
 import { useFetchProductQuery } from "../redux/api/productApis"
@@ -12,7 +12,7 @@ const ProductPage = () => {
     const params = useParams()
     const productId = params.productId
     const { data, isError, isLoading } = useFetchProductQuery(productId ?? '')
-    const { addToCart, fetchError } = useAddToCart()
+    const { addToCart, fetchError, addedOk } = useAddToCart()
     const { token, userId } = useAuthenticate()
 
     const { data: userData } = useFetchUserQuery(
@@ -29,7 +29,7 @@ const ProductPage = () => {
     }
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mb: 10  }}>
             {isLoading && <CircularProgress/>}
             {(isError || productId === '') && 
                 <Alert sx={{ alignItems: 'center' }}
@@ -41,6 +41,12 @@ const ProductPage = () => {
             <AlertSnackBar 
                 message={fetchError}
                 severity="error"/>}
+            {addedOk && 
+            <AlertSnackBar 
+                message="Item added to cart successfully"
+                severity="success"
+                hideduration={2000}
+                location="top"/>}
             {(!isLoading && !isError && data) && 
                 <Grid2 container
                     columnSpacing={1}
@@ -71,6 +77,7 @@ const ProductPage = () => {
                             {data.description} 
                         </Typography>
                         <br/>
+                        <AppBar color='inherit' position='fixed' sx={{ top: 'auto', bottom: 1, padding: 2 }}>
                         <Box sx={{ alignItems: 'center',
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -95,6 +102,7 @@ const ProductPage = () => {
                                 </Badge>}
                             </Typography>
                         </Box>
+                        </AppBar>
                     </Box>
                 </Grid2>
            }

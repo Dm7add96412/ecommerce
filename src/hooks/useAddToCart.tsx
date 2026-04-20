@@ -13,6 +13,7 @@ const useAddToCart = () => {
     const navigate = useNavigate()
     const { token, userId, logOut } = useAuthenticate()
     const [ fetchError, setFetchError ] = useState<string>('')
+    const [ addedOk, setAddedOk ] = useState<boolean>(false)
     const { data, isError, error, isFetching } = useFetchUserQuery({ id: userId, token: token })
     const [updateUser] = useUpdateUserMutation()
     const dispatch = useAppDispatch()
@@ -34,22 +35,25 @@ const useAddToCart = () => {
 
     const addToCart = useCallback(
         async (product: Product) => {
+            setAddedOk(false)
             const id = product.id.toString()
             const title = product.title
                 if (data && data.cart) {
                     const foundItem = data.cart.find(item => item.id === id && item.title === title)
                     if (foundItem) {
                     const updatedItem: CartItem = { ...foundItem, quantity: foundItem.quantity + 1 }
-                    await updateUser({ id: userId, token, cartItem: updatedItem })
+                    const res = await updateUser({ id: userId, token, cartItem: updatedItem })
+                    if (res) setAddedOk(true)
                     } else {
                         const newItem: CartItem = { ...product, quantity: 1 }
-                        await updateUser({ id: userId, token, cartItem: newItem })
+                        const res = await updateUser({ id: userId, token, cartItem: newItem })
+                        if (res) setAddedOk(true)
                 }
             }    
         },
         [data, updateUser, userId, token]
     )
-    return { addToCart, fetchError }
+    return { addToCart, fetchError, addedOk }
 }
 
 export default useAddToCart

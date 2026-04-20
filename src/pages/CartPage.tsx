@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { AppBar, Box, Button, Grid2, IconButton, TextField, Typography } from '@mui/material';
+import { AppBar, Box, Button, Grid2, TextField, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 
@@ -44,6 +45,11 @@ const CartPage = () => {
 
     const onRemoveFromCart = async (cartItem: CartItem) => {
         const updatedItem: CartItem = { ...cartItem, quantity: cartItem.quantity - 1 }
+        await updateUser({ id: userId, token, cartItem: updatedItem })
+    }
+
+    const onDeleteFromCart = async (cartItem: CartItem) => {
+        const updatedItem: CartItem = { ...cartItem, quantity: 0 }
         await updateUser({ id: userId, token, cartItem: updatedItem })
     }
 
@@ -109,7 +115,7 @@ const CartPage = () => {
                             <Grid2 size={3}>
                                 <img src={item.images[0]} style={{ width: 100, height: 100 }}/>
                             </Grid2>
-                            <Grid2 size={5}>
+                            <Grid2 size={4}>
                                 <Typography
                                     sx={{whiteSpace: 'collapse', 
                                         overflow: 'hidden',
@@ -127,9 +133,9 @@ const CartPage = () => {
                                     flexDirection: 'row',
                                     justifyContent: 'center',
                                     alignItems: 'center' }}>
-                                <IconButton onClick={() => onRemoveFromCart(item)}>
-                                    <RemoveIcon/>
-                                </IconButton>
+                                    <RemoveIcon fontSize='small'
+                                        onClick={() => onRemoveFromCart(item)}
+                                        sx={{ "&:hover": { cursor: "pointer" } }}/>
                                 <TextField
                                     variant='standard'
                                     size='small'
@@ -147,9 +153,19 @@ const CartPage = () => {
                                             padding: 0,
                                         },
                                     }}/>
-                                <IconButton onClick={() => onAddToCart(item)}>
-                                    <AddIcon/>
-                                </IconButton>
+                                    <AddIcon fontSize='small' 
+                                        onClick={() => onAddToCart(item)}
+                                        sx={{ "&:hover": { cursor: "pointer" } }}/>
+                            </Grid2>
+                            <Grid2 size={1}
+                                    sx={{ display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center' }}>
+                                <DeleteIcon fontSize='small'
+                                    color='action'
+                                    sx={{ "&:hover": { cursor: "pointer" } }}
+                                    onClick={() => onDeleteFromCart(item)}/>
                             </Grid2>
                         </Box>
                     ))}

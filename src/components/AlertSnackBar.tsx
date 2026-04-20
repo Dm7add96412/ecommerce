@@ -4,24 +4,19 @@ import Snackbar from "@mui/material/Snackbar"
 import { Alert } from "@mui/material"
 
 
-const AlertSnackBar: React.FC<AlertSnackBarProps> = ({ severity, message }) => {
+const AlertSnackBar: React.FC<AlertSnackBarProps> = ({ severity, message, hideduration, location }) => {
     const [open, setOpen] = useState<boolean>(true)
 
     const handleClose = (
-/*         event?: React.SyntheticEvent | Event,
-        reason?: SnackbarCloseReason, */
         ) => {
-/*         if (reason === 'clickaway') {
-            return;
-        } */
-
         setOpen(false);
         }
 
     return (
         <Snackbar open={open} 
             onClose={handleClose}
-            anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}>
+            anchorOrigin={{ horizontal: 'center', vertical: location ? location : 'bottom' }}
+            autoHideDuration={hideduration}>
             <Alert 
                 onClose={handleClose}
                 severity={severity}
