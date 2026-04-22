@@ -43,6 +43,8 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
 
     const productsPaginated = products.slice(offset, offset + limit)
 
+    console.log(productsPaginated)
+
     const sortByPrice = (event: SelectChangeEvent) => {
         setSorting(true)
         setSortAlpha('')
@@ -89,12 +91,6 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                     justifyContent: 'center',
                     gap: 2,
                     maxWidth: '90%'}}>
-            {addedOk && 
-            <AlertSnackBar 
-                message="Item added to cart successfully"
-                severity="success"
-                hideduration={2000}
-                location="top"/>}
                 <Button onClick={clearSorting}>Clear sorting</Button>
                     <FormControl sx={{ width: 130 }}>
                         <InputLabel>Sort by title</InputLabel>
@@ -124,10 +120,16 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                             Products sorted {sorted}
                     </Alert>
                 </Box>}
-                {fetchError !== '' && 
-                    <AlertSnackBar 
-                        message={fetchError}
-                        severity="error"/>}
+            {fetchError !== '' && 
+                <AlertSnackBar 
+                    message={fetchError}
+                    severity="error"/>}
+            {addedOk && fetchError === '' && 
+                <AlertSnackBar 
+                    message="Item added to cart successfully"
+                    severity="success"
+                    hideduration={2000}
+                    location="top"/>}
             <HandlePagination
                 allProducts={productsList}
                 limit={limit}
@@ -160,7 +162,10 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                 alignItems: 'center',
                                 padding: 0.5,
                                 gap: 1}}>
-                                <img src={product.images[0]} alt='' style={{ width: '100%', height: 300, objectFit: 'cover' }} />
+                                <img src={product.images[0]} 
+                                    alt='Image not found' 
+                                    style={{ width: '100%', height: 300, objectFit: 'cover' }} 
+                                    />
                                 <Typography 
                                     sx={{whiteSpace: 'nowrap', 
                                         overflow: 'hidden', 
@@ -182,14 +187,16 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                             <b>{product.price} €</b>
                                         </Typography>
                                     </Box>
-                                    {token && <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
-                                        <AddShoppingCartIcon color="info"
-                                        onClick={(e) => {e.preventDefault(); addToCart(product)}}
-                                        sx={{ transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
-                                            '&:hover': {
-                                                transform: 'scale(1.2)',
-                                                color: 'primary.main' }
-                                        }}/></Badge>}
+                                    <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
+                                        <AddShoppingCartIcon color={!token ? 'disabled' : 'info'}
+                                            onClick={(e) => {e.preventDefault(); addToCart(product)}}
+                                            sx={ token ? { transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',
+                                                '&:hover': {
+                                                    transform: 'scale(1.2)',
+                                                    color: 'primary.main' }
+                                            } : {}}
+                                            aria-disabled={!token}/>
+                                    </Badge>
                                 </Box>
                             </Card>
                         </Link>

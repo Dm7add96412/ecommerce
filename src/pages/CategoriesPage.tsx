@@ -10,7 +10,7 @@ const CategoriesPage = () => {
             columnSpacing={1}
             rowSpacing={1}
             columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
-            sx={{ width: '100%',
+            sx={{ maxWidth: '100%',
                 display: 'flex',
                 justifyContent: 'center'}}>
             <Grid2 size={12}
@@ -35,7 +35,7 @@ const CategoriesPage = () => {
                     </Alert>}
             </Grid2>
             {data ? (data.map(category => (
-                <Grid2 size={{ xs: 3, sm: 3, md: 3, lg: 3 }}
+                <Grid2 size={{ xs: 4, sm: 4, md: 4, lg: 4 }}
                     key={category.id}
                     sx={{ display: 'flex',
                     justifyContent: 'center',
@@ -56,6 +56,7 @@ const CategoriesPage = () => {
                                 <CardMedia component='img'
                                     image={category.image}
                                     height='140'
+                                    alt="Image not found"
                                     sx={{ objectFit: 'cover',
                                         zIndex: 0,
                                         transition: 'transform 0.2s ease-in-out',

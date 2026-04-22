@@ -121,7 +121,7 @@ const ProfileContent = () => {
             <AlertSnackBar 
                 message={fetchError}
                 severity="error"/>}
-            {deleteOk && 
+            {deleteOk && fetchError === '' && 
             <AlertSnackBar 
                 message="Account deleted successfully. Redirecting..."
                 severity="success"/>}
