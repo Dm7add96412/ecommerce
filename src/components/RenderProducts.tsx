@@ -10,6 +10,7 @@ import useAddToCart from "../hooks/useAddToCart"
 import { useFetchUserQuery } from "../redux/api/userApi"
 import useAuthenticate from "../hooks/useAuthenticate"
 import AlertSnackBar from "./AlertSnackBar"
+import notfound from '../assets/linked4.png'
 
 const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [page, setPage] = useState<number>(1)
@@ -42,8 +43,6 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     }
 
     const productsPaginated = products.slice(offset, offset + limit)
-
-    console.log(productsPaginated)
 
     const sortByPrice = (event: SelectChangeEvent) => {
         setSorting(true)
@@ -165,7 +164,10 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                 <img src={product.images[0]} 
                                     alt='Image not found' 
                                     style={{ width: '100%', height: 300, objectFit: 'cover' }} 
-                                    />
+                                    onError={(e) => {
+                                        e.currentTarget.src = notfound
+                                        e.currentTarget.style.objectFit = 'contain'
+                                    }}/>
                                 <Typography 
                                     sx={{whiteSpace: 'nowrap', 
                                         overflow: 'hidden', 

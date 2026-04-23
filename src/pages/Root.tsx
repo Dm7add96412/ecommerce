@@ -69,6 +69,7 @@ const Root = () => {
                             <Typography variant='h6'
                                 noWrap
                                 component='a'
+                                href='/'
                                 sx={{
                                     alignItems: 'center',
                                     mr: 2,

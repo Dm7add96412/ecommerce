@@ -1,6 +1,8 @@
 import { Alert, Box, Card, CardActionArea, CardContent, CardMedia, CircularProgress, Grid2, Typography } from "@mui/material"
-import { useFetchAllCategoriesQuery } from "../redux/api/categoriesApis"
 import { Link } from "react-router-dom"
+
+import { useFetchAllCategoriesQuery } from "../redux/api/categoriesApis"
+import notfound from '../assets/linked4.png'
 
 const CategoriesPage = () => {
     const { data, isLoading, isError } = useFetchAllCategoriesQuery()
@@ -53,16 +55,20 @@ const CategoriesPage = () => {
                             style={{ textDecoration: 'none' }}>
                             <CardActionArea>
                                 <Box sx={{ overflow: 'hidden' }}>
-                                <CardMedia component='img'
-                                    image={category.image}
-                                    height='140'
-                                    alt="Image not found"
-                                    sx={{ objectFit: 'cover',
-                                        zIndex: 0,
-                                        transition: 'transform 0.2s ease-in-out',
-                                        transformOrigin: 'center center',
-                                        '&:hover': {transform: 'scale(1.1)'}
-                                     }}/>          
+                                    <CardMedia component='img'
+                                        image={category.image}
+                                        height='140'
+                                        alt="Image not found"
+                                        sx={{ objectFit: 'cover',
+                                            zIndex: 0,
+                                            transition: 'transform 0.2s ease-in-out',
+                                            transformOrigin: 'center center',
+                                            '&:hover': {transform: 'scale(1.1)'}
+                                        }}
+                                        onError={(e) => {
+                                            e.currentTarget.src = notfound
+                                            e.currentTarget.style.objectFit = 'contain'
+                                        }}/>          
                                 </Box>
                                 <CardContent>
                                     <Typography 

@@ -7,6 +7,7 @@ import useAddToCart from "../hooks/useAddToCart"
 import { useFetchUserQuery } from "../redux/api/userApi"
 import useAuthenticate from "../hooks/useAuthenticate"
 import AlertSnackBar from "../components/AlertSnackBar"
+import notfound from '../assets/linked4.png'
 
 const ProductPage = () => {
     const params = useParams()
@@ -70,7 +71,13 @@ const ProductPage = () => {
                                             width: 370, minWidth: 370,
                                             minHeight: 350,
                                             padding: 1 }}>
-                                        <img src={image} alt='Image not found' style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                        <img src={image} 
+                                            alt='Image not found' 
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            onError={(e) => {
+                                                e.currentTarget.src = notfound
+                                                e.currentTarget.style.objectFit = 'contain'
+                                            }}/>
                                     </Grid2>
                                 ))}
                             </Grid2>

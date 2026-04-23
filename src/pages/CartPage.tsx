@@ -13,6 +13,7 @@ import { logoutAuth } from '../redux/reducers/authReducer';
 import { isApiError } from '../utils/apiError';
 import useAuthenticate from '../hooks/useAuthenticate';
 import AlertSnackBar from '../components/AlertSnackBar';
+import notfound from '../assets/linked4.png'
 
 const CartPage = () => {
     const navigate = useNavigate()
@@ -116,55 +117,83 @@ const CartPage = () => {
                                 to={`/singleproduct/${item.id}`}
                                 style={{ textDecoration: 'none' }}
                                 sx={{ 
-                                    width: { xs: 380, md: 700 },
+                                    width: { xs: 400, md: 750 },
                                 }}>
                                 <CardActionArea sx={{ display: 'flex',
                                     flexDirection: 'row', }}>
-                                    <Grid2 size={3} sx={{ display: 'flex' }}>
-                                        <img src={item.images[0]} 
-                                            style={{ width: 100, height: 100, borderRadius: '50px', marginTop: 3, marginBottom: 3 }}/>
+                                    <Grid2 size={2} sx={{ display: 'flex' }}>
+                                        <img src={item.images[0]}
+                                            style={{ width: 70, height: 70, borderRadius: '50px', marginTop: 3, marginBottom: 5 }}
+                                            onError={(e) => {
+                                                e.currentTarget.src = notfound
+                                            }}/>
                                     </Grid2>
-                                    <Grid2 size={4}>
+                                    <Grid2 size={5}>
                                         <Typography
-                                            sx={{whiteSpace: 'collapse', 
+                                            sx={{ whiteSpace: 'nowrap',
                                                 overflow: 'hidden',
-                                                margin: 2}}>
+                                                margin: 2,
+                                                textAlign: 'start' }}>
                                             {item.title}
                                         </Typography>
                                     </Grid2>
                                     <Grid2 size={2}>
                                         <Typography>
-                                            {item.price} €
+                                            {item.price * item.quantity} €
                                         </Typography>
                                     </Grid2>
-                                    <Grid2 size={2} 
-                                        sx={{ display: 'flex',
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                            alignItems: 'center' }}>
-                                            <RemoveIcon fontSize='small'
-                                                onClick={(e) => {e.preventDefault(); onRemoveFromCart(item)}}
-                                                sx={{ "&:hover": { cursor: "pointer", color: 'primary.main' } }}/>
-                                        <TextField
-                                            variant='standard'
-                                            size='small'
-                                            inputMode='text'
-                                            value={itemId === item.id ? itemQuantity : item.quantity}
-                                            onChange={event => handleItemQuantity(event.target.value, item.id)}
-                                            onBlur={() => onInsertManualCart(item)}
-                                            sx={{
-                                                width: `${String(item.quantity).length + 1}ch`,
-                                                minWidth: `${String(item.quantity).length + 1}ch`,
-                                                textAlign: 'center',
-                                                mb: 0.2,
-                                                '& input': {
-                                                    textAlign: 'center',
-                                                    padding: 0,
-                                                },
-                                            }}/>
-                                            <AddIcon fontSize='small' 
-                                                onClick={(e) => {e.preventDefault(); onAddToCart(item)}}
-                                                sx={{ "&:hover": { cursor: "pointer", color: 'primary.main' } }}/>
+                                    <Grid2 size={2} >
+                                        <Grid2 container
+                                            columns={3}
+                                            sx={{ display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            mb: 0.5 }}>
+                                            <Grid2 size={3}>
+                                                <Typography visibility='hidden'>hidden</Typography>
+                                            </Grid2>                                 
+                                            <Grid2
+                                                size={3}
+                                                sx={{ display: 'flex',
+                                                flexDirection: 'row',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                }}>
+                                                <RemoveIcon fontSize='small'
+                                                    onClick={(e) => {e.preventDefault(); onRemoveFromCart(item)}}
+                                                    sx={{ "&:hover": { cursor: "pointer", color: 'primary.main' } }}/>
+                                                    <TextField
+                                                        variant='standard'
+                                                        size='small'
+                                                        inputMode='text'
+                                                        value={itemId === item.id ? itemQuantity : item.quantity}
+                                                        onChange={event => handleItemQuantity(event.target.value, item.id)}
+                                                        onBlur={() => onInsertManualCart(item)}
+                                                        onClick={(e) => e.preventDefault()}
+                                                        sx={{
+                                                            width: `${String(item.quantity).length + 1}ch`,
+                                                            minWidth: `${String(item.quantity).length + 1}ch`,
+                                                            textAlign: 'center',
+                                                            mb: 0.2,
+                                                            '& input': {
+                                                                textAlign: 'center',
+                                                                padding: 0,
+                                                            }
+                                                        }}/>
+                                                <AddIcon fontSize='small' 
+                                                    onClick={(e) => {e.preventDefault(); onAddToCart(item)}}
+                                                    sx={{ "&:hover": { cursor: "pointer", color: 'primary.main' } }}/>
+                                            </Grid2>
+                                            <Grid2 size={3}>
+                                                <Typography fontSize='small' 
+                                                    visibility={item.quantity < 2 ? 'hidden' : 'visible'}
+                                                    sx={{ whiteSpace: 'nowrap', 
+                                                        overflow: 'visible',
+                                                        width: '100%' }}>
+                                                    x {item.price} €
+                                                </Typography>
+                                            </Grid2>
+                                        </Grid2>
                                     </Grid2>
                                     <Grid2 size={1}
                                             sx={{ display: 'flex',
