@@ -126,7 +126,9 @@ const CartPage = () => {
                         <Grid2 size={12}
                             key={item.id}
                             sx={{ display: 'flex',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: 120
                                 }}>
                             <Card 
                                 component={RouterLink}
@@ -134,9 +136,12 @@ const CartPage = () => {
                                 style={{ textDecoration: 'none' }}
                                 sx={{ 
                                     width: { xs: 400, md: 750 },
+                                    height: '100%',
+                                    alignContent: 'center'
                                 }}>
                                 <CardActionArea sx={{ display: 'flex',
-                                    flexDirection: 'row', }}>
+                                    flexDirection: 'row',
+                                    height: '100%' }}>
                                     <Grid2 size={2} sx={{ display: 'flex' }}>
                                         <img src={item.images[0]}
                                             style={{ width: 70, height: 70, borderRadius: '50px', marginTop: 3, marginBottom: 5 }}

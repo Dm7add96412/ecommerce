@@ -12,7 +12,7 @@ const CategoriesPage = () => {
             columnSpacing={1}
             rowSpacing={1}
             columns={{ xs: 3, sm: 6, md: 9, lg: 12 }}
-            sx={{ maxWidth: '100%',
+            sx={{ width: '100%',
                 display: 'flex',
                 justifyContent: 'center'}}>
             <Grid2 size={12}
