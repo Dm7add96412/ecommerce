@@ -9,6 +9,8 @@ import CategoriesPage from './pages/CategoriesPage';
 import ProductsByCategoryPage from './pages/ProductsByCategoryPage';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
+import SuccessPage from './pages/SuccessPage';
+import CancelPage from './pages/CancelPage';
 
 function App() {
 
@@ -52,6 +54,14 @@ function App() {
         {
           path: '/login',
           element: <LoginPage/>
+        },
+        {
+          path: '/success',
+          element: <SuccessPage/>
+        },
+                {
+          path: '/cancel',
+          element: <CancelPage/>
         }
       ]
     }

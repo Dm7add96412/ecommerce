@@ -8,6 +8,7 @@ import categoriesApi from "./api/categoriesApis";
 import authApi from "./api/authApi";
 import userApi from "./api/userApi";
 import authReducer from "./reducers/authReducer";
+import stripeApi from "./api/stripeApi";
 
 const persistConfig = {
   key: 'auth',
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   [productApis.reducerPath]: productApis.reducer,
   [categoriesApi.reducerPath]: categoriesApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
-  [userApi.reducerPath]: userApi.reducer
+  [userApi.reducerPath]: userApi.reducer,
+  [stripeApi.reducerPath]: stripeApi.reducer
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
@@ -29,7 +31,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({serializableCheck: false})
-    .concat(productApis.middleware, categoriesApi.middleware, authApi.middleware, userApi.middleware)
+    .concat(productApis.middleware, categoriesApi.middleware, authApi.middleware, userApi.middleware, stripeApi.middleware)
 })
 
 export type RootState = ReturnType<typeof rootReducer>

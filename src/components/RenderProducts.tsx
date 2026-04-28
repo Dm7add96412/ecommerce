@@ -11,6 +11,7 @@ import { useFetchUserQuery } from "../redux/api/userApi"
 import useAuthenticate from "../hooks/useAuthenticate"
 import AlertSnackBar from "./AlertSnackBar"
 import notfound from '../assets/linked4.png'
+import { ifInCartQuantity } from "../utils/ifInCartQuantity"
 
 const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     const [page, setPage] = useState<number>(1)
@@ -32,15 +33,6 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
     useEffect(() => {
         setProducts([...productsList])
     }, [productsList])
-
-    const ifInCartQuantity = (productId: string) => {
-        if (data && data.cart) {
-            const foundItem = data.cart.find(item => item.id === productId.toString())
-            if (foundItem) {
-                return foundItem.quantity
-            }
-        }
-    }
 
     const productsPaginated = products.slice(offset, offset + limit)
 
@@ -189,7 +181,7 @@ const RenderProducts:React.FC<RenderProductsProp> = ({ productsList }) => {
                                             <b>{product.price} €</b>
                                         </Typography>
                                     </Box>
-                                    <Badge badgeContent={ifInCartQuantity(product.id)} color='error'>
+                                    <Badge badgeContent={ifInCartQuantity(data?.cart, product.id, product.title)} color='error'>
                                         <AddShoppingCartIcon color={!token ? 'disabled' : 'info'}
                                             onClick={(e) => {e.preventDefault(); addToCart(product)}}
                                             sx={ token ? { transition: 'transform 0.2s ease-in-out, color 0.2s ease-in-out',

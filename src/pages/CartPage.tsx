@@ -14,6 +14,7 @@ import { isApiError } from '../utils/apiError';
 import useAuthenticate from '../hooks/useAuthenticate';
 import AlertSnackBar from '../components/AlertSnackBar';
 import notfound from '../assets/linked4.png'
+import { useCreatePaymentIntentMutation } from '../redux/api/stripeApi';
 
 const CartPage = () => {
     const navigate = useNavigate()
@@ -24,6 +25,7 @@ const CartPage = () => {
     const { token, userId, logOut } = useAuthenticate()
     const { data, isError, isFetching, error } = useFetchUserQuery({ id: userId, token: token })
     const [updateUser] = useUpdateUserMutation()
+    const [createPaylmentIntent] = useCreatePaymentIntentMutation()
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
@@ -90,6 +92,20 @@ const CartPage = () => {
             return data.cart.map(item => item.price * item.quantity).reduce((a, b) => a + b)
         }
     }
+
+    const makePayment = async() => {
+        if (data?.cart) {
+            try {
+                const response = await createPaylmentIntent(data.cart)
+                if (response.data) {
+                   window.location.href = response.data.url
+                } 
+            } catch(err) {
+                console.log(err)
+            }
+        }
+        
+    } 
 
     return (
         <Box sx={{ justifyItems: 'center', maxWidth: 800, mb: 10 }}>
@@ -218,7 +234,10 @@ const CartPage = () => {
                     alignItems: 'center'
                 }}>
                     {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
-                    <Button variant='contained'>Checkout</Button>
+                    <Button variant='contained'
+                        onClick={makePayment}>
+                        Checkout
+                    </Button>
                 </Box>
             </AppBar>
         </Box>

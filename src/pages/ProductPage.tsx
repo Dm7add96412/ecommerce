@@ -8,6 +8,7 @@ import { useFetchUserQuery } from "../redux/api/userApi"
 import useAuthenticate from "../hooks/useAuthenticate"
 import AlertSnackBar from "../components/AlertSnackBar"
 import notfound from '../assets/linked4.png'
+import { ifInCartQuantity } from "../utils/ifInCartQuantity"
 
 const ProductPage = () => {
     const params = useParams()
@@ -19,15 +20,6 @@ const ProductPage = () => {
     const { data: userData } = useFetchUserQuery(
         { id: userId, token: token }
     )
-
-    const ifInCartQuantity = (productId: string) => {
-        if (userData && userData.cart) {
-            const foundItem = userData.cart.find(item => item.id === productId.toString())
-            if (foundItem) {
-                return foundItem.quantity
-            }
-        }
-    }
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', mb: 10  }}>
@@ -107,7 +99,7 @@ const ProductPage = () => {
                                 Price: <b>{data.price} €</b>
                             </Typography>
                             <Typography>
-                                <Badge badgeContent={ifInCartQuantity(data.id)} color='error'>
+                                <Badge badgeContent={ifInCartQuantity(userData?.cart, data.id, data.title)} color='error'>
                                     <Button variant='contained'
                                         size='medium' 
                                         onClick={(e) => {e.preventDefault(); addToCart(data)}}
