@@ -1,4 +1,6 @@
 import { Box, Typography } from "@mui/material"
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import { Alert } from "@mui/material"
 
 const CancelPage = () => {
 
@@ -9,8 +11,17 @@ const CancelPage = () => {
             padding: 2,
             gap: 1,
             textAlign: 'center',
-            width: 250  }}>
-            <Typography variant='h5'>Payment cancelled</Typography>
+            width: 300  }}>
+            <Alert severity="error"
+                variant="standard"
+                icon={<CheckCircleIcon fontSize="large"/>}>
+            <Typography variant='h5'
+                sx={{ display: 'flex',
+                flexDirection: 'row',
+                 }}>
+                Payment cancelled
+            </Typography>
+            </Alert>
         </Box>
     )
 }

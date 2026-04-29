@@ -56,7 +56,7 @@ function App() {
           element: <LoginPage/>
         },
         {
-          path: '/success',
+          path: '/success/:sessionId',
           element: <SuccessPage/>
         },
                 {

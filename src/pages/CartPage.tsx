@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AppBar, Box, Button, Card, CardActionArea, Grid2, TextField, Typography } from '@mui/material';
+import { AppBar, Box, Button, Card, CardActionArea, CircularProgress, Grid2, TextField, Typography } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -22,6 +22,7 @@ const CartPage = () => {
     const [itemQuantity, setItemQuantity] = useState<string | number>('')
     const [itemId, setItemId] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
+    const [loading, setLoading] = useState<boolean>(false)
     const { token, userId, logOut } = useAuthenticate()
     const { data, isError, isFetching, error } = useFetchUserQuery({ id: userId, token: token })
     const [updateUser] = useUpdateUserMutation()
@@ -94,17 +95,23 @@ const CartPage = () => {
     }
 
     const makePayment = async() => {
+        setLoading(true)
+        setErrorMessage('')
         if (data?.cart) {
             try {
                 const response = await createPaylmentIntent(data.cart)
                 if (response.data) {
                    window.location.href = response.data.url
-                } 
-            } catch(err) {
-                console.log(err)
+                } else if (response.error) throw response.error
+            } catch(error) {
+                setLoading(false)
+                if (isApiError(error)) {
+                    setErrorMessage(error.data.error)
+                } else {
+                    setErrorMessage('Error processing payment')
+                }
             }
-        }
-        
+        } 
     } 
 
     return (
@@ -240,8 +247,13 @@ const CartPage = () => {
                 }}>
                     {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
                     <Button variant='contained'
-                        onClick={makePayment}>
-                        Checkout
+                        onClick={makePayment}
+                        sx={{ display: 'flex',
+                            flexDirection: 'row',
+                            gap: 1
+                         }}>
+                        Proceed to payment
+                        {loading && <CircularProgress color='inherit' size={20}/>}
                     </Button>
                 </Box>
             </AppBar>

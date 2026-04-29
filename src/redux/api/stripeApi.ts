@@ -18,9 +18,21 @@ const stripeApi = createApi({
                     products: body
                 }
             })
+        }),
+        savePayment: builder.mutation<void, string>({
+            query: (sessionId) => ({
+                url: '/savepayment',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    sessionId: sessionId
+                },
+            })
         })
     })
 })
 
-export const { useCreatePaymentIntentMutation } = stripeApi
+export const { useCreatePaymentIntentMutation, useSavePaymentMutation } = stripeApi
 export default stripeApi
