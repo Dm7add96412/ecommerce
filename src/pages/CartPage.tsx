@@ -99,7 +99,7 @@ const CartPage = () => {
         setErrorMessage('')
         if (data?.cart) {
             try {
-                const response = await createPaylmentIntent(data.cart)
+                const response = await createPaylmentIntent({ cart: data.cart, token, id: userId })
                 if (response.data) {
                    window.location.href = response.data.url
                 } else if (response.error) throw response.error

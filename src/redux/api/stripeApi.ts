@@ -1,34 +1,32 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CartItem } from "../../types/CartItem";
 import { StripeResponse } from "../../types/StripeResponse";
+import UserQuery from "../../types/UserQuery";
 
 
 const stripeApi = createApi({
     reducerPath: 'stripeApi',
     baseQuery: fetchBaseQuery({ baseUrl: '/api/payment' }),
     endpoints: builder => ({
-        createPaymentIntent: builder.mutation<StripeResponse, CartItem[]>({
-            query: (body) => ({
+        createPaymentIntent: builder.mutation<StripeResponse, UserQuery>({
+            query: ({ token, cart }) => ({
                 url: '/',
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`
                 },
-                body: {
-                    products: body
-                }
+                body: cart
             })
         }),
-        savePayment: builder.mutation<void, string>({
-            query: (sessionId) => ({
+        savePayment: builder.mutation<{ message: string }, UserQuery>({
+            query: ({ token, sessionId }) => ({
                 url: '/savepayment',
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    Authorization: `Bearer ${token}`
                 },
                 body: {
                     sessionId: sessionId
-                },
+                }
             })
         })
     })
