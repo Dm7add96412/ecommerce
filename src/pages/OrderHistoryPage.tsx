@@ -59,39 +59,37 @@ const OrderHistoryPage = () => {
                     </TableCell>
                 </TableRow>
                 <TableRow>
-                  {/*   <TableCell> */}
-                        <Collapse in={open} unmountOnExit>
-                            <Table size="small">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell align="left"><b>Title</b></TableCell>
-                                        <TableCell align="right"><b>Quantity</b></TableCell>
-                                        <TableCell align="right"><b>Unit price</b></TableCell>
-                                        <TableCell align="right"><b>Total price</b></TableCell>
+                    <Collapse in={open} unmountOnExit>
+                        <Table size="small">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left"><b>Title</b></TableCell>
+                                    <TableCell align="right"><b>Quantity</b></TableCell>
+                                    <TableCell align="right"><b>Unit price</b></TableCell>
+                                    <TableCell align="right"><b>Total price</b></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {row.cart.map((item) => (
+                                    <TableRow key={item.title + item.price}>
+                                        <TableCell align="left">{item.title}</TableCell>
+                                        <TableCell align="right">{item.quantity}</TableCell>
+                                        <TableCell align="right">{item.price} €</TableCell>
+                                        <TableCell align="right">{item.price * item.quantity} €</TableCell>
                                     </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {row.cart.map((item) => (
-                                        <TableRow key={item.title + item.price}>
-                                            <TableCell align="left">{item.title}</TableCell>
-                                            <TableCell align="right">{item.quantity}</TableCell>
-                                            <TableCell align="right">{item.price} €</TableCell>
-                                            <TableCell align="right">{item.price * item.quantity} €</TableCell>
-                                        </TableRow>
-                                    ))}
-                                    <TableRow>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell></TableCell>
-                                        <TableCell align="right">
-                                            <b>TOTAL: {cartTotal(row.cart)} €</b>   
-                                        </TableCell>
-                                        
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </Collapse>
-                   {/*  </TableCell> */}
+                                ))}
+                                <TableRow>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell></TableCell>
+                                    <TableCell align="right">
+                                        <b>TOTAL: {cartTotal(row.cart)} €</b>   
+                                    </TableCell>
+                                    
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </Collapse>
                 </TableRow>
             </Fragment>
         )

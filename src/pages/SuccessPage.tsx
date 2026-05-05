@@ -27,9 +27,8 @@ const SuccessPage = () => {
             if (sessionId) {
                 const response = await savePayment({ sessionId: sessionId, token: token, id: userId })
                 if (response.data) {
-                console.log('Response data: ', response.data)
-                refetch()
-                setLoading(false)
+                    refetch()
+                    setLoading(false)
                 } else if (response.error) throw response.error
             } else throw { error: 'Could not get session ID' }
         } catch(error) {
