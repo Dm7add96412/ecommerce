@@ -116,7 +116,7 @@ const CartPage = () => {
 
     return (
         <Box sx={{ justifyItems: 'center', maxWidth: 800, mb: 10 }}>
-            <Typography variant='h5' sx={{ padding: 2 }}> SHOPPING CART</Typography>
+            <Typography variant='h5' sx={{ padding: 2 }}>SHOPPING CART</Typography>
             {errorMessage && <AlertSnackBar 
                     message={errorMessage}
                     severity="error"/>}
@@ -129,6 +129,8 @@ const CartPage = () => {
                     justifyContent: 'space-evenly',
                     textAlign: 'center'
                 }}>
+                {!data?.cart || data.cart.length < 1
+                && <Typography>Nothing in the cart yet!</Typography>}
                 {(data?.cart && data.cart.length > 0) && data.cart.map(item => (
                         <Grid2 size={12}
                             key={item.id}
@@ -247,6 +249,7 @@ const CartPage = () => {
                 }}>
                     {!isError && <Typography variant='h6'>Total price: {cartTotal()} €</Typography>}
                     <Button variant='contained'
+                        disabled={!data?.cart || data.cart.length < 1}
                         onClick={makePayment}
                         sx={{ display: 'flex',
                             flexDirection: 'row',

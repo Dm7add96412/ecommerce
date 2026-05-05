@@ -49,7 +49,7 @@ const SignUpPage = () => {
             padding: 2,
             gap: 1,
             textAlign: 'center',
-            width: 250 }}>
+            width: 300 }}>
             <Typography variant='h5'>SIGN UP</Typography>
             <br/>
             <Box sx={{ display: 'flex',

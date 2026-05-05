@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material"
+import { Box, CircularProgress, Typography } from "@mui/material"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import { Alert } from "@mui/material"
 import { useNavigate, useParams } from "react-router-dom"
@@ -15,11 +15,32 @@ const SuccessPage = () => {
     const params = useParams()
     const sessionId = params.sessionId
     const navigate = useNavigate()
+    const [loading, setLoading] = useState<boolean>(true)
     const { token, userId, logOut } = useAuthenticate()
-    const { data, isError, isFetching, error } = useFetchUserQuery({ id: userId, token: token })
+    const { data, isError, isFetching, error, refetch } = useFetchUserQuery({ id: userId, token: token })
     const [savePayment] = useSavePaymentMutation()
     const [errorMessage, setErrorMessage] = useState<string>('')
     const dispatch = useAppDispatch()
+
+    const handleSavePayment = async () => {
+        try {
+            if (sessionId) {
+                const response = await savePayment({ sessionId: sessionId, token: token, id: userId })
+                if (response.data) {
+                console.log('Response data: ', response.data)
+                refetch()
+                setLoading(false)
+                } else if (response.error) throw response.error
+            } else throw { error: 'Could not get session ID' }
+        } catch(error) {
+            setLoading(false)
+            if (isApiError(error)) {
+                setErrorMessage(error.data.error)
+            } else {
+                setErrorMessage('Error processing payment')
+            }
+        }
+    }
 
     useEffect(() => {
         if(!isFetching && (isError || !data)) {
@@ -37,27 +58,10 @@ const SuccessPage = () => {
     }, [isError, data, isFetching, navigate, dispatch, error, logOut])
 
     useEffect(() => {
-        if(data && sessionId) {
+        if(token && userId && sessionId) {
             handleSavePayment()
         }
-    }, [sessionId, data])
-
-    const handleSavePayment = async () => {
-        try {
-            if (sessionId) {
-                const response = await savePayment({ sessionId: sessionId, token: token, id: userId })
-                if (response.data) {
-                   console.log('Response data: ', response.data)
-                } else if (response.error) throw response.error
-            } else throw { error: 'Could not get session ID' }
-        } catch(error) {
-            if (isApiError(error)) {
-                setErrorMessage(error.data.error)
-            } else {
-                setErrorMessage('Error processing payment')
-            }
-        }
-    }
+    }, [sessionId, token, userId])
 
     return (
         <Box sx={{ display: 'flex',
@@ -70,7 +74,8 @@ const SuccessPage = () => {
             {errorMessage !== '' &&
             <AlertSnackBar message={errorMessage}
                 severity="error"/>}
-            {errorMessage === '' ? 
+            {loading && <CircularProgress sx={{ alignSelf: 'center' }}/>}
+            {errorMessage === '' && !loading ? 
             <Alert severity="success"
                 variant="standard"
                 icon={<CheckCircleIcon fontSize="large"/>}
@@ -85,6 +90,7 @@ const SuccessPage = () => {
                     Payment successful
                 </Typography>
             </Alert> :
+            !loading &&
             <Alert severity="error"
                 variant="standard"
                 icon={<CheckCircleIcon fontSize="large"/>}
@@ -96,7 +102,7 @@ const SuccessPage = () => {
                     sx={{ display: 'flex',
                     flexDirection: 'row',
                     }}>
-                    Could not complete payment
+                    Error processing payment
                 </Typography>
             </Alert>}
         </Box>

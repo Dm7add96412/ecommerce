@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
 
 function App() {
 
@@ -59,9 +60,13 @@ function App() {
           path: '/success/:sessionId',
           element: <SuccessPage/>
         },
-                {
+        {
           path: '/cancel',
           element: <CancelPage/>
+        },
+        {
+          path: '/orderhistory',
+          element: <OrderHistoryPage/>
         }
       ]
     }

@@ -85,6 +85,14 @@ const ProfileContent = () => {
             <Typography><b>Logged in as <u>{data?.username}</u></b></Typography>
             <Typography>Your shopping cart has <b>{data?.cart?.length}</b> items</Typography>
             <Typography>Happy shopping!</Typography>
+            <Link variant="body1"
+                color="info"
+                underline="none"
+                component="button"
+                disabled={loading}
+                onClick={() => navigate('/orderhistory')}>
+                Order history
+            </Link>
             <Button variant='contained' 
                 onClick={logOut}
                 disabled={loading}>Logout</Button>
@@ -94,7 +102,7 @@ const ProfileContent = () => {
                 component="button"
                 disabled={loading}
                 onClick={handleClickOpen}
-                sx={{ cursor: 'pointer' }}>
+               >
                     Delete account
             </Link>
             <Dialog open={open}

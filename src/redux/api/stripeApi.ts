@@ -6,6 +6,7 @@ import UserQuery from "../../types/UserQuery";
 const stripeApi = createApi({
     reducerPath: 'stripeApi',
     baseQuery: fetchBaseQuery({ baseUrl: '/api/payment' }),
+    tagTypes: ['User'],
     endpoints: builder => ({
         createPaymentIntent: builder.mutation<StripeResponse, UserQuery>({
             query: ({ token, cart }) => ({
@@ -27,7 +28,8 @@ const stripeApi = createApi({
                 body: {
                     sessionId: sessionId
                 }
-            })
+            }),
+            invalidatesTags: ['User']
         })
     })
 })

@@ -41,9 +41,9 @@ const useAddToCart = () => {
                 if (data && data.cart) {
                     const foundItem = data.cart.find(item => item.id === id && item.title === title)
                     if (foundItem) {
-                    const updatedItem: CartItem = { ...foundItem, quantity: foundItem.quantity + 1 }
-                    const res = await updateUser({ id: userId, token, cartItem: updatedItem })
-                    if (res) setAddedOk(true)
+                        const updatedItem: CartItem = { ...foundItem, quantity: foundItem.quantity + 1 }
+                        const res = await updateUser({ id: userId, token, cartItem: updatedItem })
+                        if (res) setAddedOk(true)
                     } else {
                         const newItem: CartItem = { ...product, quantity: 1 }
                         const res = await updateUser({ id: userId, token, cartItem: newItem })
