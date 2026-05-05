@@ -59,6 +59,7 @@ const OrderHistoryPage = () => {
                     </TableCell>
                 </TableRow>
                 <TableRow>
+                    <TableCell sx={{ padding: 0 }}>
                     <Collapse in={open} unmountOnExit>
                         <Table size="small">
                             <TableHead>
@@ -85,11 +86,11 @@ const OrderHistoryPage = () => {
                                     <TableCell align="right">
                                         <b>TOTAL: {cartTotal(row.cart)} €</b>   
                                     </TableCell>
-                                    
                                 </TableRow>
                             </TableBody>
                         </Table>
                     </Collapse>
+                    </TableCell>
                 </TableRow>
             </Fragment>
         )
