@@ -1,6 +1,7 @@
 # Ecommerce App
 
-A Vite / React / Typescript fake e-commerce project with a separate backend for user/cart data and login.
+A Vite / React / Redux / RTKqueries / Typescript fake e-commerce project with a separate backend for user data, shopping cart, order history, Stripe payment and login.
+
 Frontend fetches product and category data https://fakeapi.platzi.com/en<br>
 
 Here's the documentation for the API:<br>
