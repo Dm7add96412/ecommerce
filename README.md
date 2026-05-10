@@ -8,9 +8,7 @@ https://api.escuelajs.co/docs
 
 You can find the deployed app [HERE](https://ecommerceapplication.fly.dev/)
 
-You can test use the app with these demo credentials:<br>
-Tester 1<br>
-password1234
+You can sign up, login, shop and do a mock payment with Stripe, using their [test cards](https://docs.stripe.com/testing?testing-method=card-numbers#visa)
 
 # Requirements
 
